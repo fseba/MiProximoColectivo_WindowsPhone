@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Windows.Phone.UI.Input;
+using MiProximoColectivo.Functions;
 
 namespace MiProximoColectivo.ViewModels
 {
@@ -20,6 +21,8 @@ namespace MiProximoColectivo.ViewModels
 
         public override System.Threading.Tasks.Task OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs args)
         {
+            /*RequestTask<BankCard> requestAddCardTask = new RequestTask<BankCard>(() => Requests.RequestAddCard(Card), true);
+            requestAddCardTask.TryStart();*/
             return null;
         }
 
