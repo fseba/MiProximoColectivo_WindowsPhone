@@ -36,7 +36,6 @@ namespace MiProximoColectivo.Views
         /// Este parámetro se usa normalmente para configurar la página.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            BottomMenuFrame.Navigate(typeof(MainMenuPage));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿<Application x:Class="MiProximoColectivo.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:MiProximoColectivo">
   <Application.Resources>
         <vm:ViewModelLocator x:Key="Locator" xmlns:vm="using:MiProximoColectivo.ViewModels.Base" />
-  </Application.Resources>
+        <x:String x:Key="MapServiceTokenString">Place your authentication token here.</x:String>
+    </Application.Resources>
 </Application>
