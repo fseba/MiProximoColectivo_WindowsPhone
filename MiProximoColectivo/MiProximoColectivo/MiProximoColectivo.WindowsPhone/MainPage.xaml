@@ -9,6 +9,13 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBlock Text="HOLA MUNDO" FontSize="50"></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Background="WhiteSmoke">
+            
+        </Grid>
+        <Frame Grid.Row="1" Name="MyFrame" ></Frame>
     </Grid>
 </Page>
