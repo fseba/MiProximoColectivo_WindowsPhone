@@ -19,9 +19,9 @@ namespace MiProximoColectivo.ViewModels.Base
         }
 
         #region View_Models
-        public MainPageViewModel MainPageViewModel
+        public MainMenuPageViewModel MainMenuPageViewModel
         {
-            get { return ServiceLocator.Current.GetInstance<MainPageViewModel>(); }
+            get { return ServiceLocator.Current.GetInstance<MainMenuPageViewModel>(); }
         }
 
         #endregion
@@ -32,7 +32,7 @@ namespace MiProximoColectivo.ViewModels.Base
         }
         public static void RegistrarViewModels()
         {
-            SimpleIoc.Default.Register<MainPageViewModel>();
+            SimpleIoc.Default.Register<MainMenuPageViewModel>();
         }
     }
 }

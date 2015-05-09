@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using GalaSoft.MvvmLight.Threading;
 
 
-namespace MiProximoColectivo.ViewsModel.Base
+namespace MiProximoColectivo.ViewModels.Base
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {

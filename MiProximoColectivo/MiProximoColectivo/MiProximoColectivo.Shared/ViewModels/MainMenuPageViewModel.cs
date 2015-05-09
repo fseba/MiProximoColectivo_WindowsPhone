@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Phone.UI.Input;
 using Windows.UI.Xaml.Navigation;
 using MiProximoColectivo.ViewModels.Base;
 
 namespace MiProximoColectivo.ViewModels
 {
-    public class MainPageViewModel : ViewModelBase
+    public class MainMenuPageViewModel : ViewModelBase
     {
         #region Tasks de navegación
         public override Task OnNavigatedFrom(NavigationEventArgs args)

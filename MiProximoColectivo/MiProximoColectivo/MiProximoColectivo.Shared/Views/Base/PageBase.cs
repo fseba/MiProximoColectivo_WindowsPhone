@@ -7,7 +7,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace MiProximoColectivo
+namespace MiProximoColectivo.Views.Base
 {
     public class PageBase : Page
     {
