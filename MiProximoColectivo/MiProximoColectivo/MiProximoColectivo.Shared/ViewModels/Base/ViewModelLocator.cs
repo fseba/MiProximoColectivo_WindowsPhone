@@ -23,6 +23,22 @@ namespace MiProximoColectivo.ViewModels.Base
         {
             get { return ServiceLocator.Current.GetInstance<MainMenuPageViewModel>(); }
         }
+        public MapPageViewModel MapPageViewModel 
+        {
+            get { return ServiceLocator.Current.GetInstance<MapPageViewModel>(); }
+        }
+        public NearFromViewModel NearFromViewModel
+        {
+            get { return ServiceLocator.Current.GetInstance<NearFromViewModel>(); }
+        }
+        public HowToArriveViewModel HowToArriveViewModel
+        {
+            get { return ServiceLocator.Current.GetInstance<HowToArriveViewModel>(); }
+        }
+        public ViewTrackViewModel ViewTrackViewModel
+        {
+            get { return ServiceLocator.Current.GetInstance<ViewTrackViewModel>(); }
+        }
 
         #endregion
         public static void Cleanup()
@@ -33,6 +49,10 @@ namespace MiProximoColectivo.ViewModels.Base
         public static void RegistrarViewModels()
         {
             SimpleIoc.Default.Register<MainMenuPageViewModel>();
+            SimpleIoc.Default.Register<MapPageViewModel>();
+            SimpleIoc.Default.Register<NearFromViewModel>();
+            SimpleIoc.Default.Register<HowToArriveViewModel>();
+            SimpleIoc.Default.Register<ViewTrackViewModel>();
         }
     }
 }

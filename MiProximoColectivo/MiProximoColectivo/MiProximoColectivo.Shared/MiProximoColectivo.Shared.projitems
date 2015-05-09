@@ -17,7 +17,11 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Base\ViewModelLocator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HowToArriveViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainMenuPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MapPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\NearFromViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewTrackViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Base\PageBase.cs" />
   </ItemGroup>
 </Project>
