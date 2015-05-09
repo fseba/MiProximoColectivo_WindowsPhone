@@ -1,4 +1,5 @@
-﻿using MiProximoColectivo.Views.Base;
+﻿using MiProximoColectivo.ViewModels;
+using MiProximoColectivo.Views.Base;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,6 +37,27 @@ namespace MiProximoColectivo.Views
         /// Este parámetro se usa normalmente para configurar la página.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+        }
+
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(e.AddedItems.Count > 0)
+            {
+                var pivotItemActual = e.AddedItems[0] as PivotItem;
+
+                switch(pivotItemActual.Name)
+                {
+                    case "NearFromPivotItem":
+                        (pivotItemActual.DataContext as NearFromViewModel).OnNavigatedTo(null);
+                        break;
+                    case "HowToArrivePivotItem":
+                        (pivotItemActual.DataContext as HowToArriveViewModel).OnNavigatedTo(null);
+                        break;
+                    case "ViewTrackPivotItem":
+                        (pivotItemActual.DataContext as ViewTrackViewModel).OnNavigatedTo(null);
+                        break;
+                }
+            }
         }
     }
 }

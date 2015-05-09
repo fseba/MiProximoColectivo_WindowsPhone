@@ -81,13 +81,8 @@ namespace MiProximoColectivo.Classes.ServerReceived
         public string Color { get; set; }
         public string NombreRecorrido { get; set; }
         public object DescripcionRecorrido { get; set; }
-    }
-
-    public class Geometry
-    {
-    }
-
-    public class LastestPositions : ObservableObject
+    }  
+    public class LatestPositions : ObservableObject
     {
         public object ContentEncoding { get; set; }
         public object ContentType { get; set; }

@@ -8,9 +8,8 @@
     xmlns:viewsBase="using:MiProximoColectivo.Views.Base"
     xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps" 
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    DataContext="{Binding Source={StaticResource Locator}, Path=MapPageViewModel}"
-    >
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"    
+ DataContext="{Binding Source={StaticResource Locator}, Path=MapPageViewModel}" >
 
     <Grid>
         <Grid.RowDefinitions>
@@ -26,15 +25,32 @@
                     HorizontalAlignment="Center"/>
         </Grid>
         <Grid Row="1" Background="DodgerBlue">
-            <Pivot>
-                <PivotItem Header="cerca de" DataContext="{Binding NearFromViewModel}">
+            <Pivot SelectionChanged="Pivot_SelectionChanged" >
+                <PivotItem Name="NearFromPivotItem" Header="cerca de" DataContext="{Binding Source={StaticResource Locator}, Path=NearFromViewModel}">
                      
                 </PivotItem>
-                <PivotItem Header="como llegar" DataContext="{Binding HowToArriveViewModel}">
+                <PivotItem Name="HowToArrivePivotItem" Header="como llegar" DataContext="{Binding Source={StaticResource Locator}, Path=HowToArriveViewModel}">
 
                 </PivotItem>
-                <PivotItem Header="ver recorrido" DataContext="{Binding ViewTrackViewModel}">
-
+                <PivotItem Name="ViewTrackPivotItem" Header="ver recorrido" DataContext="{Binding Source={StaticResource Locator}, Path=ViewTrackViewModel}" >
+                    <Grid>
+                        <StackPanel Margin="0,0,0,0">
+                            <TextBlock Text="Recorridos" FontSize="14" Margin="15,0,0,0"/>
+                            <Button RequestedTheme="Light" HorizontalAlignment="Stretch">
+                                <Button.Flyout>
+                                    <ListPickerFlyout ItemsSource="{Binding TracksNames}">
+                                        <ListPickerFlyout.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}" Foreground="White"/>
+                                            </DataTemplate>
+                                        </ListPickerFlyout.ItemTemplate>
+                                    </ListPickerFlyout>
+                                    
+                                </Button.Flyout>
+                                
+                            </Button>                            
+                        </StackPanel>
+                    </Grid>
                 </PivotItem>
             </Pivot>
         </Grid>

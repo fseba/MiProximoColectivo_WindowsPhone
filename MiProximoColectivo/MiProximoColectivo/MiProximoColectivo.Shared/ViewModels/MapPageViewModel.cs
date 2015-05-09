@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Windows.Phone.UI.Input;
-using MiProximoColectivo.Functions;
 
 namespace MiProximoColectivo.ViewModels
 {
