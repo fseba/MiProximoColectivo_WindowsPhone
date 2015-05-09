@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Threading;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-
+using MiProximoColectivo.Views;
 // La plantilla Aplicación vacía está documentada en http://go.microsoft.com/fwlink/?LinkId=234227
 
 namespace MiProximoColectivo
@@ -64,7 +65,7 @@ namespace MiProximoColectivo
                 rootFrame = new Frame();
 
                 // TODO: Cambiar este valor a un tamaño de caché adecuado para la aplicación
-                rootFrame.CacheSize = 1;
+                rootFrame.CacheSize = 2;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
@@ -74,6 +75,8 @@ namespace MiProximoColectivo
                 // Poner el marco en la ventana actual.
                 Window.Current.Content = rootFrame;
             }
+
+            DispatcherHelper.Initialize();
 
             if (rootFrame.Content == null)
             {
@@ -95,7 +98,7 @@ namespace MiProximoColectivo
                 // Cuando no se restaura la pila de navegación para navegar a la primera página,
                 // configurar la nueva página al pasar la información requerida como parámetro
                 // de navegación
-                if (!rootFrame.Navigate(typeof(MainPage), e.Arguments))
+                if (!rootFrame.Navigate(typeof(MapPage), e.Arguments))
                 {
                     throw new Exception("Failed to create initial page");
                 }

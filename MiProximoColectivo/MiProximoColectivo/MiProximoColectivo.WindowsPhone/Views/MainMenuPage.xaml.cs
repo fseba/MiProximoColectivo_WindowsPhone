@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MiProximoColectivo.Views.Base;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,22 +14,18 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// La plantilla de elemento Página en blanco está documentada en http://go.microsoft.com/fwlink/?LinkId=234238
+// La plantilla de elemento Página en blanco está documentada en http://go.microsoft.com/fwlink/?LinkID=390556
 
-namespace MiProximoColectivo
+namespace MiProximoColectivo.Views
 {
     /// <summary>
     /// Página vacía que se puede usar de forma independiente o a la que se puede navegar dentro de un objeto Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MainMenuPage : PageBase
     {
-        public MainPage()
+        public MainMenuPage()
         {
             this.InitializeComponent();
-
-            this.NavigationCacheMode = NavigationCacheMode.Required;
-
-            BottomMenuFrame.Navigate(typeof(BlankPage1));
         }
 
         /// <summary>
@@ -38,13 +35,6 @@ namespace MiProximoColectivo
         /// Este parámetro se usa normalmente para configurar la página.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            // TODO: Preparar la página que se va a mostrar aquí.
-
-            // TODO: Si la aplicación contiene varias páginas, asegúrese de
-            // controlar el botón para retroceder del hardware registrándose en el
-            // evento Windows.Phone.UI.Input.HardwareButtons.BackPressed.
-            // Si usa NavigationHelper, que se proporciona en algunas plantillas,
-            // el evento se controla automáticamente.
         }
     }
 }
