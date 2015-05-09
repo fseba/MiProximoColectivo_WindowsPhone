@@ -27,13 +27,13 @@
         </Grid>
         <Grid Row="1" Background="DodgerBlue">
             <Pivot>
-                <PivotItem Header="cerca de">
+                <PivotItem Header="cerca de" DataContext="{Binding NearFromViewModel}">
                      
                 </PivotItem>
-                <PivotItem Header="como llegar">
+                <PivotItem Header="como llegar" DataContext="{Binding HowToArriveViewModel}">
 
                 </PivotItem>
-                <PivotItem Header="ver recorrido">
+                <PivotItem Header="ver recorrido" DataContext="{Binding ViewTrackViewModel}">
 
                 </PivotItem>
             </Pivot>
