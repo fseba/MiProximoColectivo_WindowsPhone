@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
 
 namespace MiProximoColectivo.Model
 {
@@ -31,6 +33,22 @@ namespace MiProximoColectivo.Model
             get;
             set;
         }
+
+        public static Geolocator DeviceLocator
+        {
+            get;
+            set;
+        }
+        public static Geoposition DevicePosition
+        {
+            get;
+            set;
+        }
+        public static bool DevicePositionReady
+        {
+            get { return (DeviceLocator != null && DeviceLocator.LocationStatus == PositionStatus.Ready && DevicePosition != null); }
+        }
+
 
         public static void Initialize()
         {
@@ -96,6 +114,6 @@ namespace MiProximoColectivo.Model
             };
 
             ParadasYRecorridos = new ObservableCollection<RecorridoYParadas>();            
-        }
+        }        
     }
 }

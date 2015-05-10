@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Windows.Phone.UI.Input;
+using Windows.UI.Xaml.Controls.Maps;
 
 namespace MiProximoColectivo.ViewModels
 {
@@ -13,6 +14,8 @@ namespace MiProximoColectivo.ViewModels
     {
         private UIObservableCollection<RecorridoYParadas> _stopsAndTracks;
         private UIObservableCollection<string> _tracksNames;
+        private string _selectedTrack;
+        
         public UIObservableCollection<RecorridoYParadas> StopsAndTracks
         {
             get { return _stopsAndTracks; }
@@ -30,6 +33,20 @@ namespace MiProximoColectivo.ViewModels
                 _tracksNames = value;
                 RaisePropertyChanged();
             }
+        }
+        public string SelectedTrack
+        {
+            get { return _selectedTrack; }
+            set
+            {
+                _selectedTrack = value;
+                RaisePropertyChanged();
+            }
+        }
+        public MapControl MyMapControl
+        {
+            get; 
+            set; 
         }
         public override System.Threading.Tasks.Task OnNavigatedFrom(Windows.UI.Xaml.Navigation.NavigationEventArgs args)
         {
@@ -52,7 +69,7 @@ namespace MiProximoColectivo.ViewModels
         /// Debe ser llamada luego de completar el GET de Recorrido y Paradas para el recorrido seleccionado
         /// </summary>
         /// <param name="recorridoYParadas"></param>
-        public void SetParadasYRecorridos(UIObservableCollection<RecorridoYParadas> recorridoYParadas)
+        public void SetParadasYRecorridos(RecorridoYParadas recorridoYParadas)
         {
 
         }

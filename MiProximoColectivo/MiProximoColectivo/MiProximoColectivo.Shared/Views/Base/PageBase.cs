@@ -23,6 +23,8 @@ namespace MiProximoColectivo.Views.Base
             Vm.SetPageStatusBar(StatusBar.GetForCurrentView());
 #endif
             Vm.OnNavigatedTo(e);
+            ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
+
             HardwareButtons.BackPressed += HardwareButtons_BackPressed;
         }
 

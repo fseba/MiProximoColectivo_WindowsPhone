@@ -47,7 +47,7 @@ namespace MiProximoColectivo
         /// resultados de la búsqueda, etc.
         /// </summary>
         /// <param name="e">Información detallada acerca de la solicitud y el proceso de inicio.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
@@ -79,6 +79,7 @@ namespace MiProximoColectivo
 
             DispatcherHelper.Initialize();
             CommonModel.Initialize();
+            
 
             if (rootFrame.Content == null)
             {

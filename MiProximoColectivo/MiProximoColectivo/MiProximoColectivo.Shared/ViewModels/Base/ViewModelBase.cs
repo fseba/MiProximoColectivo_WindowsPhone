@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using GalaSoft.MvvmLight.Threading;
+using Windows.Devices.Geolocation;
 
 
 namespace MiProximoColectivo.ViewModels.Base
@@ -28,6 +29,24 @@ namespace MiProximoColectivo.ViewModels.Base
         private ContentDialog _loadingPopUp;
         private bool _loadingPopUpCloseEnabled;
         private bool _isloadingPopUpOpen;
+        
+        private static Geoposition _geoposition;
+
+        public static Geolocator DeviceLocator
+        {
+            get;
+            set;
+        }
+        public Geoposition DevicePosition
+        {
+            get { return _geoposition; }
+            set
+            {
+                _geoposition = value;
+                RaisePropertyChanged();
+            }
+        }        
+
 
         public ViewModelBase()
         {
@@ -266,8 +285,8 @@ namespace MiProximoColectivo.ViewModels.Base
         public void ShowStatusBarProgressIndicator(string message = "MercadoPago")
         {
             DispatcherHelper.CheckBeginInvokeOnUI(async () =>
-            {
-                PageStatusBar.ForegroundColor = Colors.Gray;
+            {                
+                PageStatusBar.ForegroundColor = Colors.Black;
                 PageStatusBar.ProgressIndicator.Text = message;
                 PageStatusBar.ProgressIndicator.ProgressValue = null;
                 await PageStatusBar.ShowAsync();
@@ -275,10 +294,11 @@ namespace MiProximoColectivo.ViewModels.Base
             });
         }
 
-        public void ShowStatusBarProgressIndicator(Color foregroundColor, string message = "MercadoPago")
+        public void ShowStatusBarProgressIndicator(Color foregroundColor, string message = "")
         {
             DispatcherHelper.CheckBeginInvokeOnUI(async () =>
-            {
+            {               
+                
                 PageStatusBar.ForegroundColor = foregroundColor;
                 PageStatusBar.ProgressIndicator.Text = message;
                 PageStatusBar.ProgressIndicator.ProgressValue = null;
@@ -289,14 +309,14 @@ namespace MiProximoColectivo.ViewModels.Base
             });
         }
 
-        public void HideStatusBarProgressIndicator()
+        public void HideStatusBarProgressIndicator(string message = "")
         {
             DispatcherHelper.CheckBeginInvokeOnUI(async () =>
             {
-                PageStatusBar.ForegroundColor = Colors.Gray;
-                PageStatusBar.ProgressIndicator.Text = "MercadoPago";
+                PageStatusBar.ForegroundColor = Colors.Black;
+                PageStatusBar.ProgressIndicator.Text = message;
                 PageStatusBar.ProgressIndicator.ProgressValue = 0;
-                _statusBarMessage = "MercadoPago";
+                _statusBarMessage = message;
 
                 await PageStatusBar.ShowAsync();
                 await PageStatusBar.ProgressIndicator.ShowAsync();

@@ -27,16 +27,10 @@ namespace MiProximoColectivo.Views
         public MapPage()
         {
             this.InitializeComponent();
-            
-        }
 
-        /// <summary>
-        /// Se invoca cuando esta página se va a mostrar en un objeto Frame.
-        /// </summary>
-        /// <param name="e">Datos de evento que describen cómo se llegó a esta página.
-        /// Este parámetro se usa normalmente para configurar la página.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
+            //Indico a los ViewModels cual será el mapa a modificar
+            (this.DataContext as MapPageViewModel).MyMapControl = myMapControl;
+            (ViewTrackPivotItem.DataContext as ViewTrackViewModel).MyMapControl = myMapControl;            
         }
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -44,7 +38,7 @@ namespace MiProximoColectivo.Views
             if(e.AddedItems.Count > 0)
             {
                 var pivotItemActual = e.AddedItems[0] as PivotItem;
-
+                
                 switch(pivotItemActual.Name)
                 {
                     case "NearFromPivotItem":
