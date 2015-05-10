@@ -45,8 +45,11 @@ namespace MiProximoColectivo.ViewModels
 
             if (args.Status == Windows.Devices.Geolocation.PositionStatus.Initializing)
                 ShowStatusBarProgressIndicator(args.Status.ToString());
-            //else 
-              //  HideStatusBarProgressIndicator(args.Status.ToString());
+            //else
+            //{
+
+                //  HideStatusBarProgressIndicator(args.Status.ToString());
+            //}
         }
 
         private void DeviceLocator_PositionChanged(Windows.Devices.Geolocation.Geolocator sender, Windows.Devices.Geolocation.PositionChangedEventArgs args)

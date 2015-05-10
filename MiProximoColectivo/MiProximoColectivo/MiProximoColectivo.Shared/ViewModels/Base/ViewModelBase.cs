@@ -282,11 +282,11 @@ namespace MiProximoColectivo.ViewModels.Base
             return amountDeletedPages;
         }
 
-        public void ShowStatusBarProgressIndicator(string message = "MercadoPago")
+        public void ShowStatusBarProgressIndicator(string message = "")
         {
             DispatcherHelper.CheckBeginInvokeOnUI(async () =>
-            {                
-                PageStatusBar.ForegroundColor = Colors.Black;
+            {
+                PageStatusBar.ForegroundColor = Colors.White;
                 PageStatusBar.ProgressIndicator.Text = message;
                 PageStatusBar.ProgressIndicator.ProgressValue = null;
                 await PageStatusBar.ShowAsync();
@@ -313,7 +313,7 @@ namespace MiProximoColectivo.ViewModels.Base
         {
             DispatcherHelper.CheckBeginInvokeOnUI(async () =>
             {
-                PageStatusBar.ForegroundColor = Colors.Black;
+                PageStatusBar.ForegroundColor = Colors.White;
                 PageStatusBar.ProgressIndicator.Text = message;
                 PageStatusBar.ProgressIndicator.ProgressValue = 0;
                 _statusBarMessage = message;
