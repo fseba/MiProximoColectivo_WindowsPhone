@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using MiProximoColectivo.Views;
+using MiProximoColectivo.Model;
 // La plantilla Aplicación vacía está documentada en http://go.microsoft.com/fwlink/?LinkId=234227
 
 namespace MiProximoColectivo
@@ -77,6 +78,7 @@ namespace MiProximoColectivo
             }
 
             DispatcherHelper.Initialize();
+            CommonModel.Initialize();
 
             if (rootFrame.Content == null)
             {

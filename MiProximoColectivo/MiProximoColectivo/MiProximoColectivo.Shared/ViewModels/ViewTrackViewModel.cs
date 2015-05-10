@@ -43,9 +43,18 @@ namespace MiProximoColectivo.ViewModels
 
         public override System.Threading.Tasks.Task OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs args)
         {
-            TracksNames = new UIObservableCollection<string>();
-            TracksNames.Add("San Luis - Balde");
+            TracksNames = new UIObservableCollection<string>(Model.CommonModel.TracksNames);
+            
             return null;
+        }
+
+        /// <summary>
+        /// Debe ser llamada luego de completar el GET de Recorrido y Paradas para el recorrido seleccionado
+        /// </summary>
+        /// <param name="recorridoYParadas"></param>
+        public void SetParadasYRecorridos(UIObservableCollection<RecorridoYParadas> recorridoYParadas)
+        {
+
         }
 
         public override System.Threading.Tasks.Task BackKeyPressed(BackPressedEventArgs args)

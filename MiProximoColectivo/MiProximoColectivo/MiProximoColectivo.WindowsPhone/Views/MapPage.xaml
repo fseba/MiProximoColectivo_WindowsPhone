@@ -41,7 +41,7 @@
                                     <ListPickerFlyout ItemsSource="{Binding TracksNames}">
                                         <ListPickerFlyout.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding}" Foreground="White"/>
+                                                <TextBlock Text="{Binding}" Foreground="White" HorizontalAlignment="Stretch" TextWrapping="WrapWholeWords"/>
                                             </DataTemplate>
                                         </ListPickerFlyout.ItemTemplate>
                                     </ListPickerFlyout>
