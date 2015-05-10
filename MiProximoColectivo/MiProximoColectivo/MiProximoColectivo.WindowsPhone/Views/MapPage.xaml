@@ -60,7 +60,7 @@
     </Grid>
 
     <Page.BottomAppBar>
-        <CommandBar Background="DodgerBlue" RequestedTheme="Dark" ClosedDisplayMode="Minimal" CacheMode="BitmapCache">
+        <CommandBar Background="DodgerBlue" RequestedTheme="Dark" ClosedDisplayMode="Compact">
             <CommandBar.PrimaryCommands>
                 <AppBarButton Label="ocultar menu" Icon="Sort"/>
                 <AppBarButton Label="centrar mapa" Command="{Binding CenterOnDeviceLocationCommand}" Icon="Target" IsEnabled="{Binding DevicePositionReady}"/>
