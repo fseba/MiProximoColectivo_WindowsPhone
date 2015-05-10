@@ -9,7 +9,8 @@
     xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps" 
     mc:Ignorable="d"
     Background="Black"    
-    DataContext="{Binding Source={StaticResource Locator}, Path=MapPageViewModel}" >
+    DataContext="{Binding Source={StaticResource Locator}, Path=MapPageViewModel}" 
+    NavigationCacheMode="Required">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -59,7 +60,7 @@
     </Grid>
 
     <Page.BottomAppBar>
-        <CommandBar Background="DodgerBlue" RequestedTheme="Dark" ClosedDisplayMode="Compact">
+        <CommandBar Background="DodgerBlue" RequestedTheme="Dark" ClosedDisplayMode="Minimal" CacheMode="BitmapCache">
             <CommandBar.PrimaryCommands>
                 <AppBarButton Label="ocultar menu" Icon="Sort"/>
                 <AppBarButton Label="centrar mapa" Command="{Binding CenterOnDeviceLocationCommand}" Icon="Target" IsEnabled="{Binding DevicePositionReady}"/>
