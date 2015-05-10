@@ -14,10 +14,10 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="300"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Grid Row="0">
+        <Grid Row="0" >
             <Maps:MapControl 
                     x:Name="myMapControl" 
                     MapServiceToken="{StaticResource MapServiceTokenString}"
@@ -27,7 +27,7 @@
                     VerticalAlignment="Stretch"
                 />
         </Grid>
-        <Grid Row="1" Background="DodgerBlue" VerticalAlignment="Stretch">
+        <Grid Row="1" Background="DodgerBlue" Height="300" VerticalAlignment="Stretch" Visibility="{Binding MenuVisible}">
             <Pivot SelectionChanged="Pivot_SelectionChanged" Margin="0" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
                 <PivotItem Name="NearFromPivotItem" Header="cerca de" DataContext="{Binding Source={StaticResource Locator}, Path=NearFromViewModel}">
                      
@@ -62,7 +62,7 @@
     <Page.BottomAppBar>
         <CommandBar Background="DodgerBlue" RequestedTheme="Dark" ClosedDisplayMode="Compact">
             <CommandBar.PrimaryCommands>
-                <AppBarButton Label="ocultar menu" Icon="Sort"/>
+                <AppBarButton Label="{Binding Label}" Command="{Binding HideMenuCommand}" Icon="{Binding Icon}"/>
                 <AppBarButton Label="centrar mapa" Command="{Binding CenterOnDeviceLocationCommand}" Icon="Target" IsEnabled="{Binding DevicePositionReady}"/>
             </CommandBar.PrimaryCommands>
         </CommandBar>

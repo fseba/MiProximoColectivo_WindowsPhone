@@ -6,15 +6,38 @@ using System.Collections.Generic;
 using System.Text;
 using Windows.Foundation;
 using Windows.Phone.UI.Input;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
 
 namespace MiProximoColectivo.ViewModels
 {
     public class MapPageViewModel : ViewModelBase
     {
+        private RelayCommand _hideMenuCommand;
         private RelayCommand _centerOnDeviceLocationCommand;
         private MapIcon _devicePositionIcon;
+        private Visibility _menuVisible;
+        private string _label;
+        private SymbolIcon _icon;
 
+        public SymbolIcon Icon
+        {
+            get { return _icon; }
+            set{ _icon = value; RaisePropertyChanged(); }
+        }
+        public string Label
+        {
+            get { return _label; }
+            set { _label = value; RaisePropertyChanged(); }
+        }
+        
+
+        public Visibility MenuVisible
+        {
+            get { return _menuVisible; }
+            set { _menuVisible = value; RaisePropertyChanged(); }
+        }
 
         public MapControl MyMapControl
         {
@@ -86,6 +109,9 @@ namespace MiProximoColectivo.ViewModels
             /*RequestTask<BankCard> requestAddCardTask = new RequestTask<BankCard>(() => Requests.RequestAddCard(Card), true);
             requestAddCardTask.TryStart();*/
             HideStatusBarProgressIndicator();
+            MenuVisible = Visibility.Visible;
+            Label = "Ocultar Menú";
+            Icon = new SymbolIcon(Symbol.Download); 
             try
             {
                 CommonModel.DeviceLocator = new Windows.Devices.Geolocation.Geolocator();
@@ -143,6 +169,27 @@ namespace MiProximoColectivo.ViewModels
             if (MyMapControl != null && CommonModel.DevicePosition != null)
                 b = await MyMapControl.TrySetViewAsync(CommonModel.DevicePosition.Coordinate.Point, 15);
 #endif
+        }
+
+        public RelayCommand HideMenuCommand
+        {
+            get { return _hideMenuCommand ?? (_hideMenuCommand = new RelayCommand(HideMenuCommandDelegate)); }
+        }
+
+        public void HideMenuCommandDelegate()
+        {
+            if (MenuVisible == Visibility.Visible)
+            {
+                Label = "Mostrar Menú";
+                Icon = new SymbolIcon(Symbol.Upload); 
+                MenuVisible = Visibility.Collapsed;
+            }
+            else
+            {
+                Label = "Ocultar Menú";
+                Icon = new SymbolIcon(Symbol.Download); 
+                MenuVisible = Visibility.Visible;
+            }
         }
 
         public override System.Threading.Tasks.Task BackKeyPressed(BackPressedEventArgs args)
