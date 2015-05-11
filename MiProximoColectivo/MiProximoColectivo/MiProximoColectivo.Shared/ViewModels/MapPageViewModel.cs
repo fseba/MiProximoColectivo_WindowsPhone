@@ -265,7 +265,8 @@ namespace MiProximoColectivo.ViewModels
                     MyMapControl.MapElements.Clear();
                     if(DevicePositionIcon != null)
                         MyMapControl.MapElements.Add(DevicePositionIcon);
-                    CommonModel.ViewTrackMapElements.Clear();
+                    CommonModel.MapPageMapElements.Clear();
+                    CommonModel.ViewTrackMapElements.Clear();                    
                 }
                 catch(Exception ex)
                 { }

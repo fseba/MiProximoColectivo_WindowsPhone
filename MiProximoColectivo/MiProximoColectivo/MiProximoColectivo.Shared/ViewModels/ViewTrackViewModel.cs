@@ -157,7 +157,7 @@ namespace MiProximoColectivo.ViewModels
                     
                     pointIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
                     pointIcon.Location = geoPoint;
-                                pointIcon.Title = "Parada " + contador.ToString();
+                                pointIcon.Title = stop.Name;
                     AddElementToMap(pointIcon);
                     contador++;
                 }
