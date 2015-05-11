@@ -109,7 +109,8 @@ namespace MiProximoColectivo.ViewModels
                 await MyMapControl.TrySetViewAsync(new Geopoint(recorridoYParadas.Stops[0].Position),12);
 
                 Debug.WriteLine(CommonModel.DistanceBetweenGeopoints(recorridoYParadas.Stops[0].Position, recorridoYParadas.Stops[1].Position));
-                Debug.WriteLine(CommonModel.DistanceBetweenGeopoints(CommonModel.DevicePosition.Coordinate.Point.Position, recorridoYParadas.Stops[1].Position));
+                if(CommonModel.DevicePosition != null)
+                    Debug.WriteLine(CommonModel.DistanceBetweenGeopoints(CommonModel.DevicePosition.Coordinate.Point.Position, recorridoYParadas.Stops[1].Position));
             }
         }
         public void AddElementToMap(MapElement elementToAdd) 
