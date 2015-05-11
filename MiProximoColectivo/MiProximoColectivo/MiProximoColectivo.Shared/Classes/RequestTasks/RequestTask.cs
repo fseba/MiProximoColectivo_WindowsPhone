@@ -36,7 +36,7 @@ namespace MiProximoColectivo.Classes.RequestTasks
         /// <returns></returns>
         public override bool TryStart()
         {
-            return true;
+            return base.TryStart();
         }
         /// <summary>
         /// Este método se acciona al Finalizar éste Request Task.

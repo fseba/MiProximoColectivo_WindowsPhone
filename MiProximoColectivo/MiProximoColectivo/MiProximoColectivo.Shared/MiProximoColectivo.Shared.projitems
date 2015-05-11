@@ -29,6 +29,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Classes\ServerReceived\Parada.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\ServerReceived\Recorrido.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\UIObservableCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToVisibility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\FalseBooleanToVisibility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Functions\Requests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\CommonModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Base\ViewModelBase.cs" />

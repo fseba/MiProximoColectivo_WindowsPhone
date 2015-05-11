@@ -144,9 +144,11 @@ namespace MiProximoColectivo.ViewModels
                 DevicePositionIcon.Title = "Estás aquí";
                 MyMapControl.MapElements.Add(DevicePositionIcon);
 
-                RequestTask<LatestPositions> requestLastestPositions = new RequestTask<LatestPositions>(() => Requests.RequestGetLastestPositions(), true);
+                /*RequestTask<LatestPositions> requestLastestPositions = new RequestTask<LatestPositions>(() => Requests.RequestGetLastestPositions(), true);
                 requestLastestPositions.TryStart();
-
+                requestLastestPositions.Completed += requestLastestPositions_Completed;
+                requestLastestPositions.Failed += requestLastestPositions_Failed;
+                */
 #if WINDOWS_PHONE_APP
                 CenterOnDeviceLocationCommandDelegate();
 #endif
@@ -161,6 +163,16 @@ namespace MiProximoColectivo.ViewModels
             {
                 
             }
+        }
+
+        private void requestLastestPositions_Failed(object sender, RequestTaskFailedEventArgs<LatestPositions> e)
+        {
+            
+        }
+
+        private void requestLastestPositions_Completed(object sender, RequestTaskCompletedEventArgs<LatestPositions> e)
+        {
+
         }
 
         public RelayCommand CenterOnDeviceLocationCommand

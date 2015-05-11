@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MiProximoColectivo.Classes;
 using MiProximoColectivo.Classes.ServerReceived;
 using Newtonsoft.Json;
+using MiProximoColectivo.Classes.Groups;
 
 namespace MiProximoColectivo.Functions
 {
@@ -22,7 +23,25 @@ namespace MiProximoColectivo.Functions
                 HttpRequestMessage hm = new HttpRequestMessage();
                 hm.Method = HttpMethod.Get;
                 hm.RequestUri = new Uri("http://www.miproximocolectivo.sanluis.gov.ar/api/EstadoUnidad/GetUltimasPosiciones");
+                //hm.RequestUri = new Uri("http://www.miproximocolectivo.sanluis.gov.ar/api/Recorrido/GetRecorridoYParadasById?recorridoID=15");
                 receivedMessage = MakeARequest<FramingHttpResponse<LatestPositions>>(hm).Result.Result;
+            }
+            catch (Exception ex)
+            {
+                receivedMessage = null;
+            }
+            return receivedMessage;
+        }
+        public static FramingHttpResponse<RecorridoYParadas> GetParadasYRecorridoById(int id)
+        {
+            FramingHttpResponse<RecorridoYParadas> receivedMessage = null;
+
+            try
+            {
+                HttpRequestMessage hm = new HttpRequestMessage();
+                hm.Method = HttpMethod.Get;                
+                hm.RequestUri = new Uri("http://www.miproximocolectivo.sanluis.gov.ar/api/Recorrido/GetRecorridoYParadasById?recorridoID=" + id);
+                receivedMessage = MakeARequest<RecorridoYParadas>(hm).Result;
             }
             catch (Exception ex)
             {

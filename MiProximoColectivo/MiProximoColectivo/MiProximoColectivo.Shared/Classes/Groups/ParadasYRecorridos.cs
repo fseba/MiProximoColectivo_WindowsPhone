@@ -1,7 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
 using MiProximoColectivo.Classes.ServerReceived;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace MiProximoColectivo.Classes.Groups
@@ -10,28 +12,24 @@ namespace MiProximoColectivo.Classes.Groups
     {
         private Recorrido _track;
         private UIObservableCollection<MpcPuntoControl> _stops;
-
-        /// <summary>
-        /// Paradas
-        /// </summary>        
-        public UIObservableCollection<MpcPuntoControl> Stops
-        {
-            get { return _stops; }
-            set
-            {
-                _stops = value;
-                RaisePropertyChanged();
-            }
-        }
-        /// <summary>
-        /// Recorrido
-        /// </summary>
+                
+        [JsonProperty("Recorrido")]
         public Recorrido Track
         {
             get { return _track; }
             set
             {
                 _track = value;
+                RaisePropertyChanged();
+            }
+        }
+        [JsonProperty("Paradas")]
+        public UIObservableCollection<MpcPuntoControl> Stops
+        {
+            get { return _stops; }
+            set
+            {
+                _stops = value;
                 RaisePropertyChanged();
             }
         }

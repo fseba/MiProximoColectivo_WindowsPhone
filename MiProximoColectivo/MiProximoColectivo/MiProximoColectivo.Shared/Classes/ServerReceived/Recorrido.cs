@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,50 +8,15 @@ namespace MiProximoColectivo.Classes.ServerReceived
 {
     public class Recorrido : ObservableObject
     {
-        private string _color;
-        private string _description;
-        private Geometry _geom;
-        private int _idEmpresa;
         private int _id;
         private string _name;
+        private object _description;
+        private int _idEmpresa;
+        private object _geom;        
         private string _nameEmpresa;
-
-        public string Color
-        {
-            get { return _color; }
-            set
-            {
-                _color = value;
-                RaisePropertyChanged();
-            }
-        }
-        public string Description
-        {
-            get { return _description; }
-            set
-            {
-                _description = value;
-                RaisePropertyChanged();
-            }
-        }
-        public Geometry Geom
-        {
-            get { return _geom; }
-            set
-            {
-                _geom = value;
-                RaisePropertyChanged();
-            }
-        }    
-        public int IdEmpresa
-        {
-            get { return _idEmpresa; }
-            set
-            {
-                _idEmpresa = value;
-                RaisePropertyChanged();
-            }
-        }
+        private string _color; 
+               
+        [JsonProperty ("MpcRecorridoID")]
         public int Id
         {
             get { return _id; }
@@ -60,6 +26,7 @@ namespace MiProximoColectivo.Classes.ServerReceived
                 RaisePropertyChanged();
             }
         }
+        [JsonProperty("Nombre")]
         public string Name
         {
             get { return _name; }
@@ -69,6 +36,37 @@ namespace MiProximoColectivo.Classes.ServerReceived
                 RaisePropertyChanged();
             }
         }
+        [JsonProperty("Descripcion")]    
+        public object Description
+        {
+            get { return _description; }
+            set
+            {
+                _description = value;
+                RaisePropertyChanged();
+            }
+        }
+        [JsonProperty("MpcEmpresaID")]
+        public int IdEmpresa
+        {
+            get { return _idEmpresa; }
+            set
+            {
+                _idEmpresa = value;
+                RaisePropertyChanged();
+            }
+        }
+        /*[JsonProperty("Geom")]
+        public object Geom
+        {
+            get { return _geom; }
+            set
+            {
+                _geom = value;
+                //RaisePropertyChanged();
+            }
+        }*/
+        [JsonProperty("NombreEmpresa")]
         public string NameEmpresa
         {
             get { return _nameEmpresa; }
@@ -78,11 +76,15 @@ namespace MiProximoColectivo.Classes.ServerReceived
                 RaisePropertyChanged();
             }
         }
-        public Recorrido()
-        { }
-        public Recorrido(string name)
+        [JsonProperty("Color")]
+        public string Color
         {
-            Name = name;
+            get { return _color; }
+            set
+            {
+                _color = value;
+                RaisePropertyChanged();
+            }
         }
     }
 }

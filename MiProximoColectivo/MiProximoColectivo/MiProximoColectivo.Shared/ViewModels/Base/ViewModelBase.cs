@@ -96,7 +96,7 @@ namespace MiProximoColectivo.ViewModels.Base
             {
                 try
                 {
-                    /*if (CommonMethods.ValidateString(title))
+                    if (string.IsNullOrWhiteSpace(title) && !string.IsNullOrEmpty(title))
                     {
                         MessageDialog md = new MessageDialog(message, title);
                         await md.ShowAsync();
@@ -105,7 +105,7 @@ namespace MiProximoColectivo.ViewModels.Base
                     {
                         MessageDialog md = new MessageDialog(message);
                         await md.ShowAsync();
-                    }*/
+                    }
                 }
                 catch
                 {
