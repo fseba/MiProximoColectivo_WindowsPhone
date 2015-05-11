@@ -17,6 +17,7 @@ namespace MiProximoColectivo.ViewModels
     {
         private RelayCommand _hideMenuCommand;
         private RelayCommand _centerOnDeviceLocationCommand;
+        private RelayCommand _cleanMapCommand;
         private MapIcon _devicePositionIcon;
         private Visibility _menuVisible;
         private string _label;
@@ -176,6 +177,10 @@ namespace MiProximoColectivo.ViewModels
         {
             get { return _hideMenuCommand ?? (_hideMenuCommand = new RelayCommand(HideMenuCommandDelegate)); }
         }
+        public RelayCommand CleanCommand
+        {
+            get { return _cleanMapCommand ?? (_cleanMapCommand = new RelayCommand(CleanMapCommandDelegate)); }
+        }
 
         public void HideMenuCommandDelegate()
         {
@@ -190,6 +195,21 @@ namespace MiProximoColectivo.ViewModels
                 Label = "Ocultar Menú";
                 Icon = new SymbolIcon(Symbol.Download); 
                 MenuVisible = Visibility.Visible;
+            }
+        }
+        public void CleanMapCommandDelegate()
+        {
+            if(MyMapControl != null)
+            {
+                try
+                {
+                    MyMapControl.MapElements.Clear();
+                    if(DevicePositionIcon != null)
+                        MyMapControl.MapElements.Add(DevicePositionIcon);
+                    CommonModel.ViewTrackMapElements.Clear();
+                }
+                catch(Exception ex)
+                { }
             }
         }
 

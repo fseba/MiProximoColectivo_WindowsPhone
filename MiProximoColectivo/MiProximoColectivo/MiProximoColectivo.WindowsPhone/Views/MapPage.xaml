@@ -64,6 +64,7 @@
             <CommandBar.PrimaryCommands>
                 <AppBarButton Label="{Binding Label}" Command="{Binding HideMenuCommand}" Icon="{Binding Icon}"/>
                 <AppBarButton Label="centrar mapa" Command="{Binding CenterOnDeviceLocationCommand}" Icon="Target" IsEnabled="{Binding DevicePositionReady}"/>
+                <AppBarButton Label="limpiar mapa" Command="{Binding CleanCommand}" Icon="Clear"/>
             </CommandBar.PrimaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

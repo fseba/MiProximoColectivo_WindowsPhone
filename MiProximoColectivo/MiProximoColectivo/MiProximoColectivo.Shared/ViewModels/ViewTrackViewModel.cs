@@ -1,6 +1,7 @@
 ﻿using MiProximoColectivo.Classes;
 using MiProximoColectivo.Classes.Groups;
 using MiProximoColectivo.Classes.ServerReceived;
+using MiProximoColectivo.Model;
 using MiProximoColectivo.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,6 @@ namespace MiProximoColectivo.ViewModels
     {
         private UIObservableCollection<RecorridoYParadas> _stopsAndTracks;
         private UIObservableCollection<string> _tracksNames;
-        private UIObservableCollection<MapElement> _mapElements;
         private string _selectedTrack;
         
         public UIObservableCollection<RecorridoYParadas> StopsAndTracks
@@ -54,7 +54,6 @@ namespace MiProximoColectivo.ViewModels
 
         public ViewTrackViewModel()
         {
-            _mapElements = new UIObservableCollection<MapElement>();
         }
 
         public override System.Threading.Tasks.Task OnNavigatedFrom(Windows.UI.Xaml.Navigation.NavigationEventArgs args)
@@ -111,16 +110,19 @@ namespace MiProximoColectivo.ViewModels
             if (MyMapControl != null && elementToAdd != null)
             {
                 MyMapControl.MapElements.Add(elementToAdd);
-                _mapElements.Add(elementToAdd);
+                CommonModel.ViewTrackMapElements.Add(elementToAdd);
             }
         }
         public void CleanMapElements()
         {
-            if(MyMapControl != null)
-            foreach(MapElement element in _mapElements)
+            if (MyMapControl != null)
             {
-                if(MyMapControl.MapElements.Contains(element))
-                    MyMapControl.MapElements.Remove(element);
+                foreach (MapElement element in CommonModel.ViewTrackMapElements)
+                {
+                    if (MyMapControl.MapElements.Contains(element))
+                        MyMapControl.MapElements.Remove(element);                        
+                }
+                CommonModel.ViewTrackMapElements.Clear();
             }
         }
 
