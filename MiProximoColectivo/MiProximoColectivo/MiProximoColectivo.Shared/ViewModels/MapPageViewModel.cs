@@ -98,7 +98,7 @@ namespace MiProximoColectivo.ViewModels
                 DevicePositionIcon = new MapIcon();
                 DevicePositionIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
                 DevicePositionIcon.Location = args.Position.Coordinate.Point;
-                DevicePositionIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", "MyLocation_PushPin.png")));
+                DevicePositionIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", "MyLocation_PushPin2_Small.png")));
                 // Get the text to display above the map icon from the resource files.
                 DevicePositionIcon.Title = "Estás aquí";
                 MyMapControl.MapElements.Add(DevicePositionIcon);
@@ -144,7 +144,7 @@ namespace MiProximoColectivo.ViewModels
                 DevicePositionIcon = new MapIcon();
                 DevicePositionIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
                 DevicePositionIcon.Location = CommonModel.DevicePosition.Coordinate.Point;
-                DevicePositionIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", "MyLocation_PushPin.png")));
+                DevicePositionIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", "MyLocation_PushPin2_Small.png")));
                 // Get the text to display above the map icon from the resource files.
                 DevicePositionIcon.Title = "Estás aquí";
                 MyMapControl.MapElements.Add(DevicePositionIcon);

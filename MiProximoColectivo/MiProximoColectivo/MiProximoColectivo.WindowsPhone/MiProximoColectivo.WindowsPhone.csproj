@@ -103,6 +103,7 @@
     <Content Include="Assets\Bus\FF99FF.png" />
     <Content Include="Assets\Bus\FFFF00.png" />
     <Content Include="Assets\Bus\MyLocation_PushPin.png" />
+    <Content Include="Assets\Bus\MyLocation_PushPin2_Small.png" />
     <Content Include="Assets\Logo.scale-240.png" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />
