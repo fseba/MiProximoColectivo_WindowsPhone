@@ -157,7 +157,8 @@ namespace MiProximoColectivo.ViewModels
                     
                     pointIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
                     pointIcon.Location = geoPoint;
-                                pointIcon.Title = stop.Name;
+                    pointIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", "BusStop_PushPin.png")));
+                    pointIcon.Title = stop.Name;
                     AddElementToMap(pointIcon);
                     contador++;
                 }
