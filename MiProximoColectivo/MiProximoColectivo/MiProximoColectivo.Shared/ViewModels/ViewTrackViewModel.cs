@@ -5,6 +5,7 @@ using MiProximoColectivo.Model;
 using MiProximoColectivo.ViewModels.Base;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Appointments;
@@ -96,6 +97,8 @@ namespace MiProximoColectivo.ViewModels
             //Ahora agrego las paradas al mapa
             if(recorridoYParadas != null && recorridoYParadas.Stops != null && recorridoYParadas.Stops.Count > 0)
             {
+                CleanMapElements();
+                int contador = 0;
                 foreach (MpcPuntoControl stop in recorridoYParadas.Stops)
                 {
                     var pointIcon = new MapIcon();
@@ -103,12 +106,16 @@ namespace MiProximoColectivo.ViewModels
                     
                     pointIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
                     pointIcon.Location = geoPoint;
-                    pointIcon.Title = "Parada";
-                    pointIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///Assets/Bus/FFFF00.png"));
+                    pointIcon.Title = "Parada " + contador.ToString() ;
 
                     AddElementToMap(pointIcon);
+                    contador++;
                 }
                 await MyMapControl.TrySetViewAsync(new Geopoint(recorridoYParadas.Stops[0].Position),12);
+
+                Debug.WriteLine(CommonModel.DistanceBetweenGeopoints(recorridoYParadas.Stops[0].Position, recorridoYParadas.Stops[1].Position));
+                if(CommonModel.DevicePosition != null)
+                    Debug.WriteLine(CommonModel.DistanceBetweenGeopoints(CommonModel.DevicePosition.Coordinate.Point.Position, recorridoYParadas.Stops[1].Position));
             }
         }
 
