@@ -121,6 +121,36 @@ namespace MiProximoColectivo.Model
 
             ParadasYRecorridos = new ObservableCollection<RecorridoYParadas>();
             ViewTrackMapElements = new UIObservableCollection<MapElement>();
-        }        
+        }
+
+        /// <summary>  
+        /// Returns the distance in miles or kilometers of any two  
+        /// latitude / longitude points.  
+        /// </summary>  
+        public static double DistanceBetweenGeopoints(BasicGeoposition pos1, BasicGeoposition pos2, DistanceType type = DistanceType.Kilometers)
+        {            
+            double R = (type == DistanceType.Miles) ? 3960 : 6371;
+            double dLat = ToRadian(pos2.Latitude - pos1.Latitude);
+            double dLon = ToRadian(pos2.Longitude - pos1.Longitude);
+            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                Math.Cos(ToRadian(pos1.Latitude)) * Math.Cos(ToRadian(pos2.Latitude)) *
+                Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+            double c = 2 * Math.Asin(Math.Min(1, Math.Sqrt(a)));
+            double d = R * c;
+            return d;
+        }
+        /// <summary>  
+        /// Convert to Radians.  
+        /// </summary>  
+        private static double ToRadian(double val)
+        {
+            return (Math.PI / 180) * val;
+        }
+        public static bool PointsNear(BasicGeoposition pos1, BasicGeoposition pos2, DistanceType type = DistanceType.Kilometers)
+        {
+            return (DistanceBetweenGeopoints(pos1, pos2, type) <= 3);
+        }
+
+        public enum DistanceType { Miles, Kilometers };  
     }
 }
