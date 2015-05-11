@@ -2,24 +2,14 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
+using Windows.Devices.Geolocation;
+using Windows.Foundation;
+using Windows.UI.Xaml.Controls.Maps;
 
 namespace MiProximoColectivo.Classes.ServerReceived
 {
-    public class Parada : ObservableObject
-    {
-        private UIObservableCollection<MpcPuntoControl> _checkPoints;
-        public UIObservableCollection<MpcPuntoControl> CheckPoints
-        {
-            get { return _checkPoints; }
-            set
-            {
-                _checkPoints = value;
-                RaisePropertyChanged();
-            }
-        }
-    }
-
     public class MpcPuntoControl : ObservableObject
     {
         private string _description;
@@ -28,7 +18,8 @@ namespace MiProximoColectivo.Classes.ServerReceived
         private string _name;
         private string _pcopi;
         private float _radio;
-        private object _point;
+        private string _rawPointString;
+        private BasicGeoposition _position;
 
         public string Description
         {
@@ -84,15 +75,39 @@ namespace MiProximoColectivo.Classes.ServerReceived
                 RaisePropertyChanged();
             }
         }
-        public object Point
+        public string RawPointString
         {
-            get { return _point; }
+            get { return _rawPointString; }
             set
             {
-                _point = value;
+                _rawPointString = value;
+                RaisePropertyChanged();
+
+                try
+                {
+                    string tempPointStr = _rawPointString.Substring(_rawPointString.IndexOf('(') + 1);
+                    tempPointStr = tempPointStr.Replace(")", "");
+                    tempPointStr = tempPointStr.Replace(".", ",");
+                    var tempPointCoordinates = tempPointStr.Split(' ');
+                    var x = double.Parse(tempPointCoordinates[1], System.Globalization.NumberStyles.Number);
+                    var y = double.Parse(tempPointCoordinates[0]);
+                    Position = new BasicGeoposition() { Latitude = x, Longitude = y };
+                }
+                catch(Exception ex)
+                {
+                    Debug.WriteLine("No se pudo crear el punto: RawString: " + _rawPointString + " exception: " + ex.Message);
+                }
+            }
+        }
+        public BasicGeoposition Position
+        {
+            get { return _position; }
+            set
+            {
+                _position = value;
                 RaisePropertyChanged();
             }
         }
-    }
+    } 
 }
 

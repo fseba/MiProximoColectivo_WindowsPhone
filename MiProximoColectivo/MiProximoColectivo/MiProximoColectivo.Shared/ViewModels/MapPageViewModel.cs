@@ -4,6 +4,7 @@ using MiProximoColectivo.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
