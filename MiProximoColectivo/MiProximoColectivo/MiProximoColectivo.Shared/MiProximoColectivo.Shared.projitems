@@ -15,14 +15,21 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\CancellableTasks\CancellableTask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\CancellableTasks\CancellableTaskCanceledEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\FrammingHttpResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\Groups\ParadasYRecorridos.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\Interfaces\IErrorDebugWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\RequestTasks\RequestTask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\RequestTasks\RequestTaskCompletedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\RequestTasks\RequestTaskFailedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\ServerReceived\Geometry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\ServerReceived\LatestPositions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\ServerReceived\MovilesByRecorrido.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\ServerReceived\Parada.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\ServerReceived\Recorrido.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\UIObservableCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Functions\Requests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\CommonModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Base\ViewModelLocator.cs" />

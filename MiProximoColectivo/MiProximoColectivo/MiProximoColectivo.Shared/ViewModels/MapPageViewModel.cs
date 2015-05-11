@@ -10,6 +10,9 @@ using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
+using MiProximoColectivo.Classes.RequestTasks;
+using MiProximoColectivo.Classes.ServerReceived;
+using MiProximoColectivo.Functions;
 
 namespace MiProximoColectivo.ViewModels
 {
@@ -108,8 +111,6 @@ namespace MiProximoColectivo.ViewModels
 
         public override async System.Threading.Tasks.Task OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs args)
         {
-            /*RequestTask<BankCard> requestAddCardTask = new RequestTask<BankCard>(() => Requests.RequestAddCard(Card), true);
-            requestAddCardTask.TryStart();*/
             HideStatusBarProgressIndicator();
             MenuVisible = Visibility.Visible;
             Label = "Ocultar Menú";
@@ -142,6 +143,9 @@ namespace MiProximoColectivo.ViewModels
                 // Get the text to display above the map icon from the resource files.
                 DevicePositionIcon.Title = "Estás aquí";
                 MyMapControl.MapElements.Add(DevicePositionIcon);
+
+                RequestTask<LatestPositions> requestLastestPositions = new RequestTask<LatestPositions>(() => Requests.RequestGetLastestPositions(), true);
+                requestLastestPositions.TryStart();
 
 #if WINDOWS_PHONE_APP
                 CenterOnDeviceLocationCommandDelegate();
