@@ -94,6 +94,13 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Bus\0000FF.png" />
+    <Content Include="Assets\Bus\0011ff.png" />
+    <Content Include="Assets\Bus\43c7b0.png" />
+    <Content Include="Assets\Bus\9900ff.png" />
+    <Content Include="Assets\Bus\ff4d00.png" />
+    <Content Include="Assets\Bus\FF99FF.png" />
+    <Content Include="Assets\Bus\FFFF00.png" />
     <Content Include="Assets\Logo.scale-240.png" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />

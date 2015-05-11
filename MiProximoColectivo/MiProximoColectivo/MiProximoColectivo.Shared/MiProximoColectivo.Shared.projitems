@@ -20,6 +20,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Classes\FrammingHttpResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\Groups\ParadasYRecorridos.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\Interfaces\IErrorDebugWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\Local\Bus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\Local\Busses.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\RequestTasks\RequestTask.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\RequestTasks\RequestTaskCompletedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\RequestTasks\RequestTaskFailedEventArgs.cs" />

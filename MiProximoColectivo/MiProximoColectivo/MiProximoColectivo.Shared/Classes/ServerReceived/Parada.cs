@@ -19,6 +19,7 @@ namespace MiProximoColectivo.Classes.ServerReceived
         private string _pcopi;
         private float _radio;
         private string _rawPointString;
+        private string _imageUrl;
         private BasicGeoposition _position;
 
         public string Description
@@ -27,6 +28,15 @@ namespace MiProximoColectivo.Classes.ServerReceived
             set
             {
                 _description = value;
+                RaisePropertyChanged();
+            }
+        }
+        public string ImageUrl
+        {
+            get { return _imageUrl; }
+            set
+            {
+                _imageUrl = value;
                 RaisePropertyChanged();
             }
         }

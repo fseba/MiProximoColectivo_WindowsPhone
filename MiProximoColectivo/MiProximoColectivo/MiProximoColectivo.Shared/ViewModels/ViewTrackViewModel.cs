@@ -6,10 +6,15 @@ using MiProximoColectivo.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.Appointments;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Phone.UI.Input;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls.Maps;
+using MiProximoColectivo.Classes.Local;
+using MiProximoColectivo.Functions;
 
 namespace MiProximoColectivo.ViewModels
 {
@@ -70,13 +75,13 @@ namespace MiProximoColectivo.ViewModels
         {
             TracksNames = new UIObservableCollection<string>(Model.CommonModel.TracksNames);
 
-            RecorridoYParadas rp = new RecorridoYParadas();
+            /*RecorridoYParadas rp = new RecorridoYParadas();
             rp.Stops = new UIObservableCollection<MpcPuntoControl>();
             rp.Stops.Add(new MpcPuntoControl() { RawPointString = "POINT (-66.338824 -33.271422)" });
             rp.Stops.Add(new MpcPuntoControl() { RawPointString = "POINT (-66.338127 -33.278207)" });
             rp.Stops.Add(new MpcPuntoControl() { RawPointString = "POINT (-66.339588 -33.260385)" });
 
-            SetParadasYRecorrido(rp);
+            SetParadasYRecorrido(rp);*/
             //-66.342074 -33.29091
 
             return null;
@@ -99,12 +104,14 @@ namespace MiProximoColectivo.ViewModels
                     pointIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
                     pointIcon.Location = geoPoint;
                     pointIcon.Title = "Parada";
+                    pointIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///Assets/Bus/FFFF00.png"));
 
                     AddElementToMap(pointIcon);
                 }
                 await MyMapControl.TrySetViewAsync(new Geopoint(recorridoYParadas.Stops[0].Position),12);
             }
         }
+
         public void AddElementToMap(MapElement elementToAdd)
         {
             if (MyMapControl != null && elementToAdd != null)

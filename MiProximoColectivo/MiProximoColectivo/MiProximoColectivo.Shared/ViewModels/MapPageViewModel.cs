@@ -4,12 +4,17 @@ using MiProximoColectivo.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Phone.UI.Input;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
+using MiProximoColectivo.Classes;
+using MiProximoColectivo.Classes.Groups;
+using MiProximoColectivo.Classes.Local;
 using MiProximoColectivo.Classes.RequestTasks;
 using MiProximoColectivo.Classes.ServerReceived;
 using MiProximoColectivo.Functions;
@@ -144,8 +149,10 @@ namespace MiProximoColectivo.ViewModels
                 DevicePositionIcon.Title = "Estás aquí";
                 MyMapControl.MapElements.Add(DevicePositionIcon);
 
-                RequestTask<LatestPositions> requestLastestPositions = new RequestTask<LatestPositions>(() => Requests.RequestGetLastestPositions(), true);
-                requestLastestPositions.TryStart();
+                Task busses = GetBussesTask();
+
+                
+
 
 #if WINDOWS_PHONE_APP
                 CenterOnDeviceLocationCommandDelegate();
@@ -160,6 +167,52 @@ namespace MiProximoColectivo.ViewModels
             finally
             {
                 
+            }
+        }
+
+        public async System.Threading.Tasks.Task GetBussesTask()
+        {
+            var allBondis = await Requests.RequestGetLastestPositions2();
+            Busses bs = new Busses();
+            bs.Busseses = new UIObservableCollection<Bus>();
+            foreach (Feature feature in allBondis.Data.features)
+            {
+                bs.Busseses.Add(new Bus() { ImageUri = feature.imageUrl, RawPointString = feature.wkt.ToString(), Nombre = feature.properties.MovilNombre });
+            }
+
+            SetBusses(bs);
+        }
+
+        public async void SetBusses(Busses busses)
+        {
+            foreach (Bus bus in busses.Busseses)
+            {
+                var pointIcon = new MapIcon();
+                var geoPoint = new Geopoint(bus.Position, AltitudeReferenceSystem.Terrain);
+
+                pointIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
+                pointIcon.Location = geoPoint;
+                pointIcon.Title = bus.Nombre;
+                pointIcon.Image = SetAssetBus(bus.ImageUri);
+
+                AddElementToMap(pointIcon);
+            }
+        }
+
+        public RandomAccessStreamReference SetAssetBus(string imageUri)
+        {
+            int i = imageUri.LastIndexOf('/');
+            string colorBusIcon = imageUri.Substring(i + 1);
+            return RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", colorBusIcon)));
+        }
+
+
+        public void AddElementToMap(MapElement elementToAdd)
+        {
+            if (MyMapControl != null && elementToAdd != null)
+            {
+                MyMapControl.MapElements.Add(elementToAdd);
+                CommonModel.ViewTrackMapElements.Add(elementToAdd);
             }
         }
 
