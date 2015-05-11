@@ -10,10 +10,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Appointments;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Phone.UI.Input;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls.Maps;
+using MiProximoColectivo.Classes.Local;
+using MiProximoColectivo.Functions;
 
 namespace MiProximoColectivo.ViewModels
 {
@@ -55,8 +59,8 @@ namespace MiProximoColectivo.ViewModels
                 if(!string.IsNullOrEmpty(_selectedTrack) && !string.IsNullOrWhiteSpace(_selectedTrack))
                 {
                     GetParadasYRecorrido(_selectedTrack);
-                }
             }
+        }
         }
         public MapControl MyMapControl
         {
@@ -83,8 +87,8 @@ namespace MiProximoColectivo.ViewModels
         {
             TracksNames = new UIObservableCollection<string>(Model.CommonModel.TracksNames);
 
-            RecorridoYParadas rp = new RecorridoYParadas();
-            /*rp.Stops = new UIObservableCollection<MpcPuntoControl>();
+            /*RecorridoYParadas rp = new RecorridoYParadas();
+            rp.Stops = new UIObservableCollection<MpcPuntoControl>();
             rp.Stops.Add(new MpcPuntoControl() { RawPointString = "POINT (-66.338824 -33.271422)" });
             rp.Stops.Add(new MpcPuntoControl() { RawPointString = "POINT (-66.338127 -33.278207)" });
             rp.Stops.Add(new MpcPuntoControl() { RawPointString = "POINT (-66.339588 -33.260385)" });
@@ -134,8 +138,8 @@ namespace MiProximoColectivo.ViewModels
         public async Task SetParadasYRecorrido(RecorridoYParadas recorridoYParadas)
         {
             try
-            {
-                //Ahora agrego las paradas al mapa
+        {
+            //Ahora agrego las paradas al mapa
                 if (recorridoYParadas != null && recorridoYParadas.Stops != null && recorridoYParadas.Stops.Count > 0)
                 {
                     bool addingElementsError = false;
@@ -143,20 +147,20 @@ namespace MiProximoColectivo.ViewModels
                     {
                         int contador = 0;
                         try
-                        {
-                            CleanMapElements();
+            {
+                CleanMapElements();
 
-                            foreach (MpcPuntoControl stop in recorridoYParadas.Stops)
-                            {
-                                var pointIcon = new MapIcon();
-                                var geoPoint = new Geopoint(stop.Position, AltitudeReferenceSystem.Terrain);
-
-                                pointIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
-                                pointIcon.Location = geoPoint;
+                foreach (MpcPuntoControl stop in recorridoYParadas.Stops)
+                {
+                    var pointIcon = new MapIcon();
+                    var geoPoint = new Geopoint(stop.Position, AltitudeReferenceSystem.Terrain);
+                    
+                    pointIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
+                    pointIcon.Location = geoPoint;
                                 pointIcon.Title = "Parada " + contador.ToString();
-                                AddElementToMap(pointIcon);
-                                contador++;
-                            }
+                    AddElementToMap(pointIcon);
+                    contador++;
+                }
                         }
                         catch (Exception ex)
                         {
@@ -169,11 +173,11 @@ namespace MiProximoColectivo.ViewModels
                     {
                         await MyMapControl.TrySetViewAsync(new Geopoint(recorridoYParadas.Stops[0].Position), 12);
 
-                        Debug.WriteLine(CommonModel.DistanceBetweenGeopoints(recorridoYParadas.Stops[0].Position, recorridoYParadas.Stops[1].Position));
+                Debug.WriteLine(CommonModel.DistanceBetweenGeopoints(recorridoYParadas.Stops[0].Position, recorridoYParadas.Stops[1].Position));
                         if (CommonModel.DevicePosition != null)
-                            Debug.WriteLine(CommonModel.DistanceBetweenGeopoints(CommonModel.DevicePosition.Coordinate.Point.Position, recorridoYParadas.Stops[1].Position));
-                    }
-                }
+                    Debug.WriteLine(CommonModel.DistanceBetweenGeopoints(CommonModel.DevicePosition.Coordinate.Point.Position, recorridoYParadas.Stops[1].Position));
+            }
+        }
             }
             catch(Exception ex)
             {

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using MiProximoColectivo.Classes.Interfaces;
 
 namespace MiProximoColectivo.Classes.RequestTasks
 {

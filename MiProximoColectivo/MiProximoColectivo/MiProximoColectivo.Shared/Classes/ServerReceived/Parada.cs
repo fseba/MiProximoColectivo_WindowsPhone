@@ -18,9 +18,19 @@ namespace MiProximoColectivo.Classes.ServerReceived
         private int _typeId;
         private string _radio;
         private string _rawPointString;
+        private string _imageUrl;
         private object _pcopi;
         private BasicGeoposition _position;
 
+        public string ImageUrl
+        {
+            get { return _imageUrl; }
+            set
+            {
+                _imageUrl = value;
+                RaisePropertyChanged();
+            }
+        }
         [JsonProperty("MpcPuntoControlID")]
         public int Id
         {
@@ -104,7 +114,7 @@ namespace MiProximoColectivo.Classes.ServerReceived
             {
                 _pcopi = value;
                 RaisePropertyChanged();
-            }
+        }
         }*/
         public BasicGeoposition Position
         {
@@ -112,7 +122,7 @@ namespace MiProximoColectivo.Classes.ServerReceived
             set
             {
                 _position = value;
-                //RaisePropertyChanged();
+                RaisePropertyChanged();
             }
         }
     } 

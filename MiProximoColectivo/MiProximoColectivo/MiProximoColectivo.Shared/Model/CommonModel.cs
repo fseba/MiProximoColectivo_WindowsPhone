@@ -49,6 +49,11 @@ namespace MiProximoColectivo.Model
         {
             get { return (DeviceLocator != null && DeviceLocator.LocationStatus == PositionStatus.Ready && DevicePosition != null); }
         }
+        public static UIObservableCollection<MapElement> MapPageMapElements
+        {
+            get;
+            set;
+        }
         public static UIObservableCollection<MapElement> ViewTrackMapElements
         {
             get;
@@ -120,6 +125,7 @@ namespace MiProximoColectivo.Model
             };
 
             ParadasYRecorridos = new ObservableCollection<RecorridoYParadas>();
+            MapPageMapElements = new UIObservableCollection<MapElement>();
             ViewTrackMapElements = new UIObservableCollection<MapElement>();
         }
 

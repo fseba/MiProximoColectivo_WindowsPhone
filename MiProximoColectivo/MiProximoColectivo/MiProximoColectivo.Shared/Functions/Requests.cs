@@ -14,6 +14,23 @@ namespace MiProximoColectivo.Functions
 {
     public static class Requests
     {
+        public static async Task<LatestPositions> RequestGetLastestPositions2()
+        {
+            try
+            {
+                string searchUrl = "http://www.miproximocolectivo.sanluis.gov.ar/api/EstadoUnidad/GetUltimasPosiciones";
+
+                HttpClient client = new HttpClient();
+                var data = await client.GetStringAsync(searchUrl);
+
+                return JsonConvert.DeserializeObject<LatestPositions>(data);
+            }
+            catch (System.Exception ex)
+            {
+                return null;
+            }
+        }
+
         public static FramingHttpResponse<LatestPositions> RequestGetLastestPositions()
         {
             FramingHttpResponse<LatestPositions> receivedMessage = null;
