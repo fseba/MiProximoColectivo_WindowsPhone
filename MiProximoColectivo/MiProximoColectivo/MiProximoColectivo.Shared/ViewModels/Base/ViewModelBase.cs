@@ -30,23 +30,6 @@ namespace MiProximoColectivo.ViewModels.Base
         private bool _loadingPopUpCloseEnabled;
         private bool _isloadingPopUpOpen;
         
-        private static Geoposition _geoposition;
-
-        public static Geolocator DeviceLocator
-        {
-            get;
-            set;
-        }
-        public Geoposition DevicePosition
-        {
-            get { return _geoposition; }
-            set
-            {
-                _geoposition = value;
-                RaisePropertyChanged();
-            }
-        }        
-
 
         public ViewModelBase()
         {

@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
+using Windows.UI.Xaml.Controls.Maps;
 
 namespace MiProximoColectivo.Model
 {
@@ -47,6 +48,11 @@ namespace MiProximoColectivo.Model
         public static bool DevicePositionReady
         {
             get { return (DeviceLocator != null && DeviceLocator.LocationStatus == PositionStatus.Ready && DevicePosition != null); }
+        }
+        public static UIObservableCollection<MapElement> ViewTrackMapElements
+        {
+            get;
+            set;
         }
 
 
@@ -113,7 +119,8 @@ namespace MiProximoColectivo.Model
                 {"San Luis - La Carolina - Intihuasi", 27},
             };
 
-            ParadasYRecorridos = new ObservableCollection<RecorridoYParadas>();            
+            ParadasYRecorridos = new ObservableCollection<RecorridoYParadas>();
+            ViewTrackMapElements = new UIObservableCollection<MapElement>();
         }        
     }
 }

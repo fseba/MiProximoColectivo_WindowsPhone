@@ -8,12 +8,13 @@ namespace MiProximoColectivo.Classes.Groups
 {
     public class RecorridoYParadas : ObservableObject
     {
-        private UIObservableCollection<Parada> _stops;
-        private Recorrido _track;        
+        private Recorrido _track;
+        private UIObservableCollection<MpcPuntoControl> _stops;
+
         /// <summary>
         /// Paradas
-        /// </summary>
-        public UIObservableCollection<Parada> Stops
+        /// </summary>        
+        public UIObservableCollection<MpcPuntoControl> Stops
         {
             get { return _stops; }
             set
