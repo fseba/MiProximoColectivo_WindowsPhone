@@ -73,6 +73,11 @@ namespace MiProximoColectivo.Model
             get;
             set;
         }
+        public static Busses NearFromPageMapBusses
+        {
+            get;
+            set;
+        }
         public static UIObservableCollection<MapElement> ViewTrackMapElements
         {
             get;
@@ -165,6 +170,8 @@ namespace MiProximoColectivo.Model
 
             CurrentBusses = new Busses();
             CurrentBusses.Busseses = new UIObservableCollection<Bus>();
+            NearFromPageMapBusses = new Busses();
+            NearFromPageMapBusses.Busseses = new UIObservableCollection<Bus>();
             BusFeatures = new UIObservableCollection<Feature>();
             ParadasYRecorridos = new ObservableCollection<RecorridoYParadas>();
             NearFromPageMapElements = new UIObservableCollection<MapElement>();

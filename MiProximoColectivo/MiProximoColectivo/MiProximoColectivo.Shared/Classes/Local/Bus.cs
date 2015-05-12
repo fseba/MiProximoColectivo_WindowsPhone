@@ -12,6 +12,7 @@ namespace MiProximoColectivo.Classes.Local
         private string _nombre;
         private BasicGeoposition _position;
         private string _rawPointString;
+        private string _track;
 
         public string ImageUri {
             get { return _imageUri; }
@@ -55,19 +56,32 @@ namespace MiProximoColectivo.Classes.Local
                 }
             }
         }
+        public string Track
+        {
+            get { return _track; }
+            set { _track = value; }
+        }
 
         public Bus()
         {
             
         }
+        public Bus(string name)
+        {
+            Nombre = name;
+        }
 
-
-        public Bus(string imageUri, BasicGeoposition position, string nombre)
+        public Bus(string imageUri, BasicGeoposition position, string nombre, string recorrido)
         {
             ImageUri = imageUri;
             Position = position;
             Nombre = nombre;
+            Track = recorrido;
         }
 
+        public override bool Equals(object obj)
+        {
+            return (obj is Bus && ((Bus)obj).Nombre == this.Nombre && ((Bus)obj).Track == this.Track);
+        }
     }
 }
