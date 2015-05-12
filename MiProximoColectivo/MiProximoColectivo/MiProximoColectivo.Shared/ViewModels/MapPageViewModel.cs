@@ -96,7 +96,7 @@ namespace MiProximoColectivo.ViewModels
                     MyMapControl.MapElements.Remove(DevicePositionIcon);
 
                 DevicePositionIcon = new MapIcon();
-                DevicePositionIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
+                DevicePositionIcon.NormalizedAnchorPoint = new Point(0.5, 1.0);
                 DevicePositionIcon.Location = args.Position.Coordinate.Point;
                 DevicePositionIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", "MyLocation_PushPin2_Small.png")));
                 // Get the text to display above the map icon from the resource files.
@@ -142,7 +142,7 @@ namespace MiProximoColectivo.ViewModels
                     MyMapControl.MapElements.Remove(DevicePositionIcon);
 
                 DevicePositionIcon = new MapIcon();
-                DevicePositionIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
+                DevicePositionIcon.NormalizedAnchorPoint = new Point(0.5, 1.0);
                 DevicePositionIcon.Location = CommonModel.DevicePosition.Coordinate.Point;
                 DevicePositionIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", "MyLocation_PushPin2_Small.png")));
                 // Get the text to display above the map icon from the resource files.

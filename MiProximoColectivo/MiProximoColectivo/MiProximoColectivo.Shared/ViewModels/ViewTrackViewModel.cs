@@ -154,8 +154,8 @@ namespace MiProximoColectivo.ViewModels
                 {
                     var pointIcon = new MapIcon();
                     var geoPoint = new Geopoint(stop.Position, AltitudeReferenceSystem.Terrain);
-                    
-                    pointIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
+
+                    pointIcon.NormalizedAnchorPoint = new Point(0.5, 1.0);
                     pointIcon.Location = geoPoint;
                     pointIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", "BusStop_PushPin.png")));
                     pointIcon.Title = stop.Name;
@@ -172,7 +172,7 @@ namespace MiProximoColectivo.ViewModels
                     });
                     if (!addingElementsError)
                     {
-                        await MyMapControl.TrySetViewAsync(new Geopoint(recorridoYParadas.Stops[0].Position), 12);
+                        await MyMapControl.TrySetViewAsync(new Geopoint(recorridoYParadas.Stops[0].Position), 11);
 
                 Debug.WriteLine(CommonModel.DistanceBetweenGeopoints(recorridoYParadas.Stops[0].Position, recorridoYParadas.Stops[1].Position));
                         if (CommonModel.DevicePosition != null)
