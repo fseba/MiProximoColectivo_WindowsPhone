@@ -28,7 +28,7 @@
                     Width="auto"
                     Height="auto"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
+                    VerticalAlignment="Stretch"                
                 />
         </Grid>
         <Grid Row="1" Background="DodgerBlue" Height="300" VerticalAlignment="Stretch" Visibility="{Binding MenuVisible}">

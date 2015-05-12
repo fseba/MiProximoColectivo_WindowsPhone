@@ -105,7 +105,8 @@ namespace MiProximoColectivo.ViewModels
                 {
                     try
                     {
-                        bussesTask = GetBussesTask2();
+                        //bussesTask = GetBussesTask2();
+                        await GetBussesTask2();
                     }
                     catch (Exception ex)
                     {
@@ -162,90 +163,101 @@ namespace MiProximoColectivo.ViewModels
         public async Task GetBussesTask2()
         {
             isDownloadingBusses = true;
-            //IsBusy = true;
+            var downloadedBusses = await Requests.RequestGetLastestPositions2();
 
-            try
+            await Task.Run(() =>
             {
-                var downloadedBusses = await Requests.RequestGetLastestPositions2();
-                Busses bs = new Busses();
-                bs.Busseses = new UIObservableCollection<Bus>();
+                try
+                {                    
+                    Busses bs = new Busses();
+                    bs.Busseses = new UIObservableCollection<Bus>();
 
-                //CleanMapElements(); 
-                CommonModel.BusFeatures.Clear();
-                CommonModel.CurrentBusses.Busseses.Clear();                
-                foreach (Feature feature in downloadedBusses.Data.features)
-                {
-                    var newBus = new Bus() { ImageUri = feature.imageUrl, RawPointString = feature.wkt.ToString(), Nombre = feature.properties.MovilNombre, Track = feature.properties.NombreRecorrido };
+                    //CleanMapElements(); 
+                    CommonModel.BusFeatures.Clear();
+                    CommonModel.CurrentBusses.Busseses.Clear();
+                    foreach (Feature feature in downloadedBusses.Data.features)
+                    {
+                        var newBus = new Bus() { ImageUri = feature.imageUrl, RawPointString = feature.wkt.ToString(), Nombre = feature.properties.MovilNombre, Track = feature.properties.NombreRecorrido };
 
-                    bs.Busseses.Add(newBus);
-                    CommonModel.BusFeatures.Add(feature);
-                    CommonModel.CurrentBusses.Busseses.Add(newBus);
+                        bs.Busseses.Add(newBus);
+                        CommonModel.BusFeatures.Add(feature);
+                        CommonModel.CurrentBusses.Busseses.Add(newBus);
+                    }
+
+                    isDownloadingBusses = false;
+
+                    if (!firstRemove || (_busTrackSelected == "Todos los Recorridos" && !_isFilteringByTrack))
+                        SetBusses2(bs);
+                    else
+                        FilterBusses2(true, ShowNearBusses, _busTrackSelected);
+
+                    //SetBusses(bs);
                 }
-
-                isDownloadingBusses = false;
-
-                if (!firstRemove || (_busTrackSelected == "Todos los Recorridos" && !_isFilteringByTrack))
-                    SetBusses2(bs);
-                else
-                    FilterBusses2(true, ShowNearBusses, _busTrackSelected);
-
-                //SetBusses(bs);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Error in GetbussesTask: " + ex.Message);
-                IsBusy = false;
-                isDownloadingBusses = false;
-            }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetbussesTask: " + ex.Message);
+                    IsBusy = false;
+                    isDownloadingBusses = false;
+                }
+            });
         }
 
-        public void SetBusses2(Busses busses, string condicionPorRecorrido = "")
+        public async void SetBusses2(Busses busses, string condicionPorRecorrido = "")
         {
-            int c = 0;
-            try
+            await Task.Run(async() =>
             {
-                foreach (Bus bus in busses.Busseses)
+                int c = 0;
+                try
                 {
-                    int index = c;
-
-                    if(index == 5)
+                    foreach (Bus bus in busses.Busseses)
                     {
+                        int index = c;
 
+                        if (index == 5)
+                        {
+
+                        }
+                        //Si se debe remover este Bus
+                        if (CommonModel.NearFromPageMapBusses.Busseses.Count > 0 && CommonModel.NearFromPageMapBusses.Busseses.Contains(bus))
+                        {
+                            await DispatcherHelper.RunAsync(() =>
+                            {
+                                int indexOfBus = CommonModel.NearFromPageMapBusses.Busseses.IndexOf(bus);
+                                MyMapControl.MapElements.RemoveAt(indexOfBus);
+                                //CommonModel.NearFromPageMapElements.RemoveAt(indexOfBus);
+                                CommonModel.NearFromPageMapBusses.Busseses.RemoveAt(indexOfBus);
+                                index = indexOfBus;
+                            });
+                        }
+                        firstRemove = true;
+
+                        if (condicionPorRecorrido == "" || bus.Track == condicionPorRecorrido)
+                        {
+                            await DispatcherHelper.RunAsync(() =>
+                            {
+                                var pointIcon = new MapIcon();
+                                var geoPoint = new Geopoint(bus.Position, AltitudeReferenceSystem.Terrain);
+
+                                pointIcon.NormalizedAnchorPoint = new Point(0.5, 1);
+                                pointIcon.Location = geoPoint;
+                                pointIcon.Title = bus.Nombre;
+                                pointIcon.Image = SetAssetBus(bus.ImageUri);
+
+                                AddElementToMapAt2(pointIcon, index, bus);
+                            });
+                        }
+                        c++;
                     }
-                    //Si se debe remover este Bus
-                    if (CommonModel.NearFromPageMapBusses.Busseses.Count > 0 && CommonModel.NearFromPageMapBusses.Busseses.Contains(bus))
-                    {
-                        int indexOfBus = CommonModel.NearFromPageMapBusses.Busseses.IndexOf(bus);
-                        MyMapControl.MapElements.RemoveAt(indexOfBus);
-                        //CommonModel.NearFromPageMapElements.RemoveAt(indexOfBus);
-                        CommonModel.NearFromPageMapBusses.Busseses.RemoveAt(indexOfBus);
-                        index = indexOfBus;              
-                    }
-                    firstRemove = true;
-
-                    if (condicionPorRecorrido == "" || bus.Track == condicionPorRecorrido)
-                    {
-                        var pointIcon = new MapIcon();
-                        var geoPoint = new Geopoint(bus.Position, AltitudeReferenceSystem.Terrain);
-
-                        pointIcon.NormalizedAnchorPoint = new Point(0.5, 1);
-                        pointIcon.Location = geoPoint;
-                        pointIcon.Title = bus.Nombre;
-                        pointIcon.Image = SetAssetBus(bus.ImageUri);
-
-                        AddElementToMapAt2(pointIcon, index, bus);
-                    }
-                    c++;
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Error in SetBusses: " + ex.Message + " - Index: " + c);
-            }
-            finally
-            {
-
-            }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in SetBusses: " + ex.Message + " - Index: " + c);
+                }
+                finally
+                {
+                    IsBusy = false;
+                }
+            });
         }
 
                 
@@ -351,7 +363,7 @@ namespace MiProximoColectivo.ViewModels
         //}
         private async void FilterBusses2(bool seteoForzado, bool colectivosCercanos, string recorrido = "Todos los Recorridos")
         {
-            await DispatcherHelper.RunAsync(async () =>
+            await Task.Run(async () =>
             {
                 try
                 {
@@ -369,16 +381,16 @@ namespace MiProximoColectivo.ViewModels
                         //Si desea filtrar por recorrido y no estaba filtrando por recorrido o seleccionó otro recorrido
                         else if (recorrido != "Todos los Recorridos" && (!_isFilteringByTrack || recorrido != _lastTrackSelected || seteoForzado))
                         {
+                            string oldLastTrackSelected = _lastTrackSelected;
                             IsBusy = true;
                             _lastTrackSelected = recorrido;
                             SetBusses2(CommonModel.CurrentBusses, recorrido);
                             
                             //Solo centro las nuevas paradas en el mapa  si son nuevas, y no si fueron llamadas al 
                             //actualizar los datos actuales.
-                            if(recorrido != _lastTrackSelected)
+                            if(recorrido != oldLastTrackSelected)
                                 await MyMapControl.TrySetViewAsync(new Geopoint(CommonModel.NearFromPageMapBusses.Busseses[0].Position), 11);
-                        }
-                        IsBusy = false;
+                        }                        
                     }
                 }
                 catch (Exception ex)
@@ -413,21 +425,24 @@ namespace MiProximoColectivo.ViewModels
         }
         public void AddElementToMapAt2(MapElement elementToAdd, int index, Bus busOfElementToAdd)
         {
-            if (MyMapControl != null && elementToAdd != null)
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
-                if (index < MyMapControl.MapElements.Count)
+                if (MyMapControl != null && elementToAdd != null)
                 {
-                    MyMapControl.MapElements.Insert(index, elementToAdd);
-                    //CommonModel.NearFromPageMapElements.Insert(index, elementToAdd);
-                    CommonModel.NearFromPageMapBusses.Busseses.Insert(index, busOfElementToAdd);
+                    if (index < MyMapControl.MapElements.Count && index < CommonModel.NearFromPageMapBusses.Busseses.Count)
+                    {                        
+                        MyMapControl.MapElements.Insert(index, elementToAdd);
+                        //CommonModel.NearFromPageMapElements.Insert(index, elementToAdd);
+                        CommonModel.NearFromPageMapBusses.Busseses.Insert(index, busOfElementToAdd);
+                    }
+                    else
+                    {
+                        MyMapControl.MapElements.Add(elementToAdd);
+                        //CommonModel.NearFromPageMapElements.Insert(index, elementToAdd);
+                        CommonModel.NearFromPageMapBusses.Busseses.Add(busOfElementToAdd);
+                    }
                 }
-                else
-                {
-                    MyMapControl.MapElements.Add(elementToAdd);
-                    //CommonModel.NearFromPageMapElements.Insert(index, elementToAdd);
-                    CommonModel.NearFromPageMapBusses.Busseses.Add(busOfElementToAdd);
-                }
-            }
+            });
         }
         public void CleanMapElements()
         {
