@@ -30,6 +30,7 @@ namespace MiProximoColectivo.Views
 
             //Indico a los ViewModels cual será el mapa a modificar
             (this.DataContext as MapPageViewModel).MyMapControl = myMapControl;
+            (NearFromPivotItem.DataContext as NearFromViewModel).MyMapControl = myMapControl;            
             (ViewTrackPivotItem.DataContext as ViewTrackViewModel).MyMapControl = myMapControl;            
         }
 

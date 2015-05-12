@@ -59,8 +59,8 @@ namespace MiProximoColectivo.ViewModels
                 if(!string.IsNullOrEmpty(_selectedTrack) && !string.IsNullOrWhiteSpace(_selectedTrack))
                 {
                     GetParadasYRecorrido(_selectedTrack);
+                }
             }
-        }
         }
         public MapControl MyMapControl
         {

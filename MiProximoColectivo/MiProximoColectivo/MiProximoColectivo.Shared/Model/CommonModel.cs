@@ -1,5 +1,6 @@
 ﻿using MiProximoColectivo.Classes;
 using MiProximoColectivo.Classes.Groups;
+using MiProximoColectivo.Classes.Local;
 using MiProximoColectivo.Classes.ServerReceived;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,16 @@ namespace MiProximoColectivo.Model
 {
     public static class CommonModel
     {
+        public static ObservableCollection<Feature> BusFeatures
+        {
+            get;
+            set;
+        }
+        public static Busses CurrentBusses
+        {
+            get;
+            set;
+        }
         public static ObservableCollection<RecorridoYParadas> ParadasYRecorridos
         {
             get;
@@ -22,6 +33,14 @@ namespace MiProximoColectivo.Model
         /// Nombres de los Recorridos
         /// </summary>
         public static ObservableCollection<string> TracksNames
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Nombres de los Recorridos paara el Pivot de NearFrom
+        /// </summary>
+        public static ObservableCollection<string> TracksNamesForNearFrom
         {
             get;
             set;
@@ -49,7 +68,7 @@ namespace MiProximoColectivo.Model
         {
             get { return (DeviceLocator != null && DeviceLocator.LocationStatus == PositionStatus.Ready && DevicePosition != null); }
         }
-        public static UIObservableCollection<MapElement> MapPageMapElements
+        public static UIObservableCollection<MapElement> NearFromPageMapElements
         {
             get;
             set;
@@ -63,6 +82,26 @@ namespace MiProximoColectivo.Model
 
         public static void Initialize()
         {
+            TracksNamesForNearFrom = new ObservableCollection<string>();
+            TracksNamesForNearFrom.Add("Todos los Recorridos");
+            TracksNamesForNearFrom.Add("San Luis - La Punta por R146 (vuelve: Bolivar)");
+            TracksNamesForNearFrom.Add("San Luis - La Punta por Ruta 3");
+            TracksNamesForNearFrom.Add("San Luis - La Punta ULP por Ruta 3");
+            TracksNamesForNearFrom.Add("San Luis - La Punta por R146 (vuelve: J. Daract)");
+            TracksNamesForNearFrom.Add("San Luis - La Punta");
+            TracksNamesForNearFrom.Add("La Punta - San Luis");
+            TracksNamesForNearFrom.Add("San Luis - Villa Mercedes");
+            TracksNamesForNearFrom.Add("Merlo - San Luis");
+            TracksNamesForNearFrom.Add("Merlo - Papagayos por Ruta 1");
+            TracksNamesForNearFrom.Add("San Luis - Candelaria");
+            TracksNamesForNearFrom.Add("San Luis - Juana Koslay (Servicio Rápido)");
+            TracksNamesForNearFrom.Add("San Luis - Potrero de los Funes ");
+            TracksNamesForNearFrom.Add("San Luis - San Roque - Las Chacras");
+            TracksNamesForNearFrom.Add("San Luis - El Volcan");
+            TracksNamesForNearFrom.Add("San Luis - Peaje");
+            TracksNamesForNearFrom.Add("San Luis - Trapiche - La Florida");
+            
+
             //Agrego los nombres de los recorridos disponibles en la página web
             TracksNames = new ObservableCollection<string>();
             TracksNames.Add("Balde - San Luis");
@@ -124,8 +163,11 @@ namespace MiProximoColectivo.Model
                 {"San Luis - La Carolina - Intihuasi", 27},
             };
 
+            CurrentBusses = new Busses();
+            CurrentBusses.Busseses = new UIObservableCollection<Bus>();
+            BusFeatures = new UIObservableCollection<Feature>();
             ParadasYRecorridos = new ObservableCollection<RecorridoYParadas>();
-            MapPageMapElements = new UIObservableCollection<MapElement>();
+            NearFromPageMapElements = new UIObservableCollection<MapElement>();
             ViewTrackMapElements = new UIObservableCollection<MapElement>();
         }
 

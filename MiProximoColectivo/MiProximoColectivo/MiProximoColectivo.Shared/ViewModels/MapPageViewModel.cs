@@ -149,7 +149,7 @@ namespace MiProximoColectivo.ViewModels
                 DevicePositionIcon.Title = "Estás aquí";
                 MyMapControl.MapElements.Add(DevicePositionIcon);
 
-                Task busses = GetBussesTask();
+                //Task busses = GetBussesTask();
 
                 
 
@@ -177,9 +177,11 @@ namespace MiProximoColectivo.ViewModels
             var allBondis = await Requests.RequestGetLastestPositions2();
             Busses bs = new Busses();
             bs.Busseses = new UIObservableCollection<Bus>();
+            CommonModel.BusFeatures.Clear();
             foreach (Feature feature in allBondis.Data.features)
             {
                 bs.Busseses.Add(new Bus() { ImageUri = feature.imageUrl, RawPointString = feature.wkt.ToString(), Nombre = feature.properties.MovilNombre });
+                CommonModel.BusFeatures.Add(feature);
             }
 
             SetBusses(bs);
@@ -214,7 +216,7 @@ namespace MiProximoColectivo.ViewModels
             if (MyMapControl != null && elementToAdd != null)
             {
                 MyMapControl.MapElements.Add(elementToAdd);
-                CommonModel.MapPageMapElements.Add(elementToAdd);
+                CommonModel.NearFromPageMapElements.Add(elementToAdd);
             }
         }
 
@@ -265,7 +267,7 @@ namespace MiProximoColectivo.ViewModels
                     MyMapControl.MapElements.Clear();
                     if(DevicePositionIcon != null)
                         MyMapControl.MapElements.Add(DevicePositionIcon);
-                    CommonModel.MapPageMapElements.Clear();
+                    CommonModel.NearFromPageMapElements.Clear();
                     CommonModel.ViewTrackMapElements.Clear();                    
                 }
                 catch(Exception ex)

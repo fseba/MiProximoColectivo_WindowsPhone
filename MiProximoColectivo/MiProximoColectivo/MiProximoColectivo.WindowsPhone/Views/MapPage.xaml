@@ -33,8 +33,31 @@
         </Grid>
         <Grid Row="1" Background="DodgerBlue" Height="300" VerticalAlignment="Stretch" Visibility="{Binding MenuVisible}">
             <Pivot SelectionChanged="Pivot_SelectionChanged" Margin="0" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
-                <PivotItem Name="NearFromPivotItem" Header="cerca de" DataContext="{Binding Source={StaticResource Locator}, Path=NearFromViewModel}">
-                     
+                <PivotItem Name="NearFromPivotItem" Header="colectivos" DataContext="{Binding Source={StaticResource Locator}, Path=NearFromViewModel}">
+                    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" IsActive="{Binding IsBusy}" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibility}}" Background="Transparent" Foreground="White"/>
+                        <Grid Visibility="{Binding IsBusy, Converter={StaticResource FalseBooleanToVisibility}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <ToggleSwitch OffContent="mostrar todas" OnContent="seleccionar línea" IsOn="{Binding ShowNearBusses, Mode=TwoWay}"/>
+                            <StackPanel Grid.Row="1" Visibility="{Binding IsBusy, Converter={StaticResource FalseBooleanToVisibility}}">
+                                <TextBlock Text="Filtrar por Recorrido" FontSize="14" Margin="15,0,0,0"/>
+                                <Button Content="{Binding BusTrackSelected}" HorizontalAlignment="Stretch">
+                                    <Button.Flyout>
+                                        <ListPickerFlyout ItemsSource="{Binding BusTracks}" SelectedItem="{Binding BusTrackSelected, Mode=TwoWay}">
+                                            <ListPickerFlyout.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" Foreground="White" HorizontalAlignment="Stretch" TextWrapping="WrapWholeWords"/>
+                                                </DataTemplate>
+                                            </ListPickerFlyout.ItemTemplate>
+                                        </ListPickerFlyout>
+                                    </Button.Flyout>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>                    
                 </PivotItem>
                 <PivotItem Name="HowToArrivePivotItem" Header="como llegar" DataContext="{Binding Source={StaticResource Locator}, Path=HowToArriveViewModel}">
 
@@ -54,8 +77,7 @@
                                         </ListPickerFlyout.ItemTemplate>
                                     </ListPickerFlyout>
                                     
-                                </Button.Flyout>
-                                
+                                </Button.Flyout>                                
                             </Button>                            
                         </StackPanel>
                     </Grid>
