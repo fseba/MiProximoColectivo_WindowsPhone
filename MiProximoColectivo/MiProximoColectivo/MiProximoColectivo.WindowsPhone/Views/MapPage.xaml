@@ -8,6 +8,8 @@
     xmlns:viewsBase="using:MiProximoColectivo.Views.Base"
     xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps" 
     xmlns:Converters="using:MiProximoColectivo.Converters"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     Background="DodgerBlue"    
     DataContext="{Binding Source={StaticResource Locator}, Path=MapPageViewModel}" 
@@ -59,9 +61,20 @@
                         </Grid>
                     </Grid>                    
                 </PivotItem>
+                
                 <PivotItem Name="HowToArrivePivotItem" Header="como llegar" DataContext="{Binding Source={StaticResource Locator}, Path=HowToArriveViewModel}">
-
+                    <Grid HorizontalAlignment="Stretch">
+                        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" IsActive="{Binding IsBusy}" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibility}}" Background="Transparent" Foreground="White"/>
+                        <ListView IsItemClickEnabled="True" ItemClick="ListView_ItemClick" >
+                            <TextBlock Name="tbLLegarParada1" FontSize="25" Text="{Binding tbParada1}" />
+                            <TextBlock Name="tbLLegarParada2" FontSize="25" Text="{Binding tbParada2}" />
+                            <TextBlock Name="tbLLegarParada3" FontSize="25" Text="{Binding tbParada3}" />
+                            <TextBlock Name="tbLLegarParada4" FontSize="25" Text="{Binding tbParada4}" />
+                            <TextBlock Name="tbLLegarParada5" FontSize="25" Text="{Binding tbParada5}" />
+                        </ListView>
+                     </Grid> 
                 </PivotItem>
+                
                 <PivotItem Name="ViewTrackPivotItem"  RequestedTheme="Dark" Header="ver recorrido" DataContext="{Binding Source={StaticResource Locator}, Path=ViewTrackViewModel}" >
                     <Grid>
                         <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" IsActive="{Binding IsBusy}" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibility}}" Background="Transparent" Foreground="White"/>

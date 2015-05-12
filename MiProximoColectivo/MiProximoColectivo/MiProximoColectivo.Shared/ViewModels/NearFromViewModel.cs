@@ -393,8 +393,8 @@ namespace MiProximoColectivo.ViewModels
                             
                             //Solo centro las nuevas paradas en el mapa  si son nuevas, y no si fueron llamadas al 
                             //actualizar los datos actuales.
-                            if(recorrido != oldLastTrackSelected)
-                                await MyMapControl.TrySetViewAsync(new Geopoint(CommonModel.NearFromPageMapBusses.Busseses[0].Position), 11);
+                            //if(recorrido != oldLastTrackSelected)
+                                //await MyMapControl.TrySetViewAsync(new Geopoint(CommonModel.NearFromPageMapBusses.Busseses[0].Position), 11);
                         }                        
                     }
                 }

@@ -300,6 +300,55 @@ namespace MiProximoColectivo.ViewModels
             get { return _calcCommand ?? (_calcCommand = new RelayCommand(CalcCommandDelegate)); }
         }
 
+        public async void TraceRouteFromPoint(BasicGeoposition bgeo, Color color)
+        {
+            BasicGeoposition startLocation = new BasicGeoposition
+            {
+                Latitude = CommonModel.DevicePosition.Coordinate.Latitude,
+                Longitude = CommonModel.DevicePosition.Coordinate.Longitude
+            };
+            Geopoint startPoint = new Geopoint(startLocation);
+
+            BasicGeoposition endLocation;
+            Geopoint endPoint;
+
+            try
+            {
+                endLocation = new BasicGeoposition
+                {
+                    Latitude = bgeo.Latitude,
+                    Longitude = bgeo.Longitude
+                };
+                endPoint = new Geopoint(endLocation);
+            }
+            catch (Exception e)
+            {
+                MessageDialog msg = new MessageDialog("Debes seleccionar un recorrido antes de elegir la parada más cercana");
+
+                return;
+            }
+
+            MapRouteFinderResult routeResult =
+            await MapRouteFinder.GetWalkingRouteAsync(
+              startPoint,
+              endPoint);
+
+            if (routeResult.Status == MapRouteFinderStatus.Success)
+            {
+                // Use the route to initialize a MapRouteView.
+                MapRouteView viewOfRoute = new MapRouteView(routeResult.Route);
+                viewOfRoute.RouteColor = color;
+                viewOfRoute.OutlineColor = color;
+                // Add the new MapRouteView to the Routes collection of the MapControl.
+                MyMapControl.Routes.Add(viewOfRoute);
+                // Fit the MapControl to the route.
+                await MyMapControl.TrySetViewBoundsAsync(
+                  routeResult.Route.BoundingBox,
+                  null,
+                  Windows.UI.Xaml.Controls.Maps.MapAnimationKind.Bow);
+            }
+
+        }
 
         public async void CalcCommandDelegate()
         {
