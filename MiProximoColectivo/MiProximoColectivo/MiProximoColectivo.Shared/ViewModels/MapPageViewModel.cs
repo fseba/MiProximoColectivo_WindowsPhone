@@ -80,7 +80,9 @@ namespace MiProximoColectivo.ViewModels
             RaisePropertyChanged("DevicePositionReady");
 
             if (args.Status == Windows.Devices.Geolocation.PositionStatus.Initializing)
-                ShowStatusBarProgressIndicator(args.Status.ToString());
+                ShowStatusBarProgressIndicator("Iniciando GPS");
+            else
+                HideStatusBarProgressIndicator();
             //else
             //{
 
@@ -147,6 +149,8 @@ namespace MiProximoColectivo.ViewModels
 
                 RaisePropertyChanged("DevicePositionReady");
 
+                CommonModel.DeviceLocator.PositionChanged += DeviceLocator_PositionChanged;
+
                 // Various display options
                 MyMapControl.LandmarksVisible = false;
                 MyMapControl.TrafficFlowVisible = false;
@@ -169,8 +173,7 @@ namespace MiProximoColectivo.ViewModels
 #if WINDOWS_PHONE_APP
                 CenterOnDeviceLocationCommandDelegate();
 #endif
-                HideStatusBarProgressIndicator();
-                CommonModel.DeviceLocator.PositionChanged += DeviceLocator_PositionChanged;
+                HideStatusBarProgressIndicator();                
             }
             catch (Exception ex)
             {

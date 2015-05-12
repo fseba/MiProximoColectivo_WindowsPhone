@@ -166,41 +166,44 @@ namespace MiProximoColectivo.ViewModels
             isDownloadingBusses = true;
             var downloadedBusses = await Requests.RequestGetLastestPositions2();
 
-            await Task.Run(() =>
+            if (downloadedBusses != null)
             {
-                try
-                {                    
-                    Busses bs = new Busses();
-                    bs.Busseses = new UIObservableCollection<Bus>();
-
-                    //CleanMapElements(); 
-                    CommonModel.BusFeatures.Clear();
-                    CommonModel.CurrentBusses.Busseses.Clear();
-                    foreach (Feature feature in downloadedBusses.Data.features)
-                    {
-                        var newBus = new Bus() { ImageUri = feature.imageUrl, RawPointString = feature.wkt.ToString(), Nombre = feature.properties.MovilNombre, Track = feature.properties.NombreRecorrido };
-
-                        bs.Busseses.Add(newBus);
-                        CommonModel.BusFeatures.Add(feature);
-                        CommonModel.CurrentBusses.Busseses.Add(newBus);
-                    }
-
-                    isDownloadingBusses = false;
-
-                    if (!firstRemove || (_busTrackSelected == "Todos los Recorridos" && !_isFilteringByTrack))
-                        SetBusses2(bs);
-                    else
-                        FilterBusses2(true, ShowNearBusses, _busTrackSelected);
-
-                    //SetBusses(bs);
-                }
-                catch (Exception ex)
+                await Task.Run(() =>
                 {
-                    Debug.WriteLine("Error in GetbussesTask: " + ex.Message);
-                    IsBusy = false;
-                    isDownloadingBusses = false;
-                }
-            });
+                    try
+                    {
+                        Busses bs = new Busses();
+                        bs.Busseses = new UIObservableCollection<Bus>();
+
+                        //CleanMapElements(); 
+                        CommonModel.BusFeatures.Clear();
+                        CommonModel.CurrentBusses.Busseses.Clear();
+                        foreach (Feature feature in downloadedBusses.Data.features)
+                        {
+                            var newBus = new Bus() { ImageUri = feature.imageUrl, RawPointString = feature.wkt.ToString(), Nombre = feature.properties.MovilNombre, Track = feature.properties.NombreRecorrido };
+
+                            bs.Busseses.Add(newBus);
+                            CommonModel.BusFeatures.Add(feature);
+                            CommonModel.CurrentBusses.Busseses.Add(newBus);
+                        }
+
+                        isDownloadingBusses = false;
+
+                        if (!firstRemove || (_busTrackSelected == "Todos los Recorridos" && !_isFilteringByTrack))
+                            SetBusses2(bs);
+                        else
+                            FilterBusses2(true, ShowNearBusses, _busTrackSelected);
+
+                        //SetBusses(bs);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine("Error in GetbussesTask: " + ex.Message);
+                        IsBusy = false;
+                        isDownloadingBusses = false;
+                    }
+                });
+            }
         }
 
         public async void SetBusses2(Busses busses, string condicionPorRecorrido = "")
