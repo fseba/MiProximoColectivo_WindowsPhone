@@ -8,7 +8,11 @@ using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Phone.UI.Input;
+using Windows.Services.Maps;
+using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
@@ -26,6 +30,7 @@ namespace MiProximoColectivo.ViewModels
         private RelayCommand _hideMenuCommand;
         private RelayCommand _centerOnDeviceLocationCommand;
         private RelayCommand _cleanMapCommand;
+        private RelayCommand _calcCommand;
         private MapIcon _devicePositionIcon;
         private Visibility _menuVisible;
         private string _label;
@@ -283,6 +288,65 @@ namespace MiProximoColectivo.ViewModels
             get { return _cleanMapCommand ?? (_cleanMapCommand = new RelayCommand(CleanMapCommandDelegate)); }
         }
 
+        public RelayCommand CalcCommand
+        {
+            get { return _calcCommand ?? (_calcCommand = new RelayCommand(CalcCommandDelegate)); }
+        }
+
+
+        public async void CalcCommandDelegate()
+        {
+            BasicGeoposition startLocation = new BasicGeoposition
+            {
+                Latitude = CommonModel.DevicePosition.Coordinate.Latitude,
+                Longitude = CommonModel.DevicePosition.Coordinate.Longitude
+            };
+            Geopoint startPoint = new Geopoint(startLocation);
+
+            BasicGeoposition endLocation;
+            Geopoint endPoint;
+
+            try
+            {
+                string[] paradaCoordinates =
+                    ApplicationData.Current.LocalSettings.Values["TemporalCoordinatesRecorrido"] as string[];
+
+
+                endLocation = new BasicGeoposition
+                {
+                    Latitude = Double.Parse(paradaCoordinates[0]),
+                    Longitude = Double.Parse(paradaCoordinates[1])
+                };
+                endPoint = new Geopoint(endLocation);
+            }
+            catch (Exception e)
+            {
+                MessageDialog msg = new MessageDialog("Debes seleccionar un recorrido antes de elegir la parada más cercana");
+
+                return;
+            }
+
+            MapRouteFinderResult routeResult =
+            await MapRouteFinder.GetWalkingRouteAsync(
+              startPoint,
+              endPoint);
+
+            if (routeResult.Status == MapRouteFinderStatus.Success)
+            {
+                // Use the route to initialize a MapRouteView.
+                MapRouteView viewOfRoute = new MapRouteView(routeResult.Route);
+                viewOfRoute.RouteColor = Colors.Blue;
+                viewOfRoute.OutlineColor = Colors.Blue;
+                // Add the new MapRouteView to the Routes collection of the MapControl.
+                MyMapControl.Routes.Add(viewOfRoute);
+                // Fit the MapControl to the route.
+                await MyMapControl.TrySetViewBoundsAsync(
+                  routeResult.Route.BoundingBox,
+                  null,
+                  Windows.UI.Xaml.Controls.Maps.MapAnimationKind.Bow);
+            }
+        }
+
         public void HideMenuCommandDelegate()
         {
             if (MenuVisible == Visibility.Visible)
@@ -305,6 +369,7 @@ namespace MiProximoColectivo.ViewModels
                 try
                 {
                     MyMapControl.MapElements.Clear();
+                     MyMapControl.Routes.Clear();
                     if(DevicePositionIcon != null)
                         MyMapControl.MapElements.Add(DevicePositionIcon);
                     CommonModel.MapPageMapElements.Clear();

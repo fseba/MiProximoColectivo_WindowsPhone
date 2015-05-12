@@ -8,12 +8,15 @@ using MiProximoColectivo.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Windows.ApplicationModel.Appointments;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Phone.UI.Input;
+using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls.Maps;
 using MiProximoColectivo.Classes.Local;
@@ -131,6 +134,34 @@ namespace MiProximoColectivo.ViewModels
             await SetParadasYRecorrido(e.Result);
         }
 
+        private double distance(BasicGeoposition pos1, Geoposition pos2, char unit)
+        {
+            double theta = pos1.Longitude - pos2.Coordinate.Longitude;
+            double dist = Math.Sin(deg2rad(pos1.Latitude)) * Math.Sin(deg2rad(pos2.Coordinate.Latitude)) + Math.Cos(deg2rad(pos1.Latitude)) * Math.Cos(deg2rad(pos2.Coordinate.Latitude)) * Math.Cos(deg2rad(theta));
+            dist = Math.Acos(dist);
+            dist = rad2deg(dist);
+            dist = dist * 60 * 1.1515;
+            if (unit == 'K')
+            {
+                dist = dist * 1.609344;
+            }
+            else if (unit == 'N')
+            {
+                dist = dist * 0.8684;
+            }
+            return (dist);
+        }
+
+        private double deg2rad(double deg)
+        {
+            return (deg * Math.PI / 180.0);
+        }
+
+        private double rad2deg(double rad)
+        {
+            return (rad / Math.PI * 180.0);
+        }
+
         /// <summary>
         /// Debe ser llamada luego de completar el GET de Recorrido y Paradas para el recorrido seleccionado
         /// </summary>
@@ -147,21 +178,46 @@ namespace MiProximoColectivo.ViewModels
                     {
                         int contador = 0;
                         try
-            {
-                CleanMapElements();
+                        {
+                            CleanMapElements();
 
-                foreach (MpcPuntoControl stop in recorridoYParadas.Stops)
-                {
-                    var pointIcon = new MapIcon();
-                    var geoPoint = new Geopoint(stop.Position, AltitudeReferenceSystem.Terrain);
+                            Dictionary<int,BasicGeoposition> cercanos = new Dictionary<int,BasicGeoposition>();
+
+                            foreach (MpcPuntoControl stop in recorridoYParadas.Stops)
+                            {
+                                var pointIcon = new MapIcon();
+                                var geoPoint = new Geopoint(stop.Position, AltitudeReferenceSystem.Terrain);
                     
-                    pointIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
-                    pointIcon.Location = geoPoint;
-                    pointIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", "BusStop_PushPin.png")));
-                    pointIcon.Title = stop.Name;
-                    AddElementToMap(pointIcon);
-                    contador++;
-                }
+                                pointIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
+                                pointIcon.Location = geoPoint;
+                                pointIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", "BusStop_PushPin.png")));
+                                pointIcon.Title = stop.Name;
+                                AddElementToMap(pointIcon);
+                    
+
+                                if (distance(stop.Position, CommonModel.DevicePosition, 'K') <= 1.5)
+                                {
+                                    cercanos.Add(contador,stop.Position);
+                                }
+                                contador++;
+                            }
+                            double masCercano = 999999;
+                            int indiceMasCercano = -1;
+
+                            foreach (KeyValuePair<int, BasicGeoposition> bg in cercanos)
+                            {
+                                if (distance(bg.Value, CommonModel.DevicePosition, 'K') <= masCercano)
+                                {
+                                    masCercano = distance(bg.Value, CommonModel.DevicePosition, 'K');
+                                    indiceMasCercano = bg.Key;
+                                }
+                            }
+
+                            ApplicationData.Current.LocalSettings.Values["TemporalCoordinatesRecorrido"] = new string[]
+                            {
+                                recorridoYParadas.Stops[indiceMasCercano].Position.Latitude.ToString(),
+                                recorridoYParadas.Stops[indiceMasCercano].Position.Longitude.ToString()
+                            };
                         }
                         catch (Exception ex)
                         {
