@@ -22,6 +22,7 @@ using MiProximoColectivo.Classes.Local;
 using MiProximoColectivo.Classes.RequestTasks;
 using MiProximoColectivo.Classes.ServerReceived;
 using MiProximoColectivo.Functions;
+using GalaSoft.MvvmLight.Threading;
 
 namespace MiProximoColectivo.ViewModels
 {
@@ -92,31 +93,34 @@ namespace MiProximoColectivo.ViewModels
             //}
         }
 
-        private void DeviceLocator_PositionChanged(Windows.Devices.Geolocation.Geolocator sender, Windows.Devices.Geolocation.PositionChangedEventArgs args)
+        private async void DeviceLocator_PositionChanged(Windows.Devices.Geolocation.Geolocator sender, Windows.Devices.Geolocation.PositionChangedEventArgs args)
         {
-            CommonModel.DevicePosition = args.Position;
-
-            RaisePropertyChanged("DevicePositionReady");
-            if(MyMapControl != null)
+            await DispatcherHelper.RunAsync(() =>
             {
-                try
-                {
-                    if (MyMapControl.MapElements.Contains(DevicePositionIcon))
-                        MyMapControl.MapElements.Remove(DevicePositionIcon);
-                }
-                catch (Exception ex)
-                {
-                    
-                }
+                CommonModel.DevicePosition = args.Position;
 
-                DevicePositionIcon = new MapIcon();
-                DevicePositionIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
-                DevicePositionIcon.Location = args.Position.Coordinate.Point;
-                DevicePositionIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", "MyLocation_PushPin.png")));
-                // Get the text to display above the map icon from the resource files.
-                DevicePositionIcon.Title = "Estás aquí";
-                MyMapControl.MapElements.Add(DevicePositionIcon);
-            }
+                RaisePropertyChanged("DevicePositionReady");
+                if (MyMapControl != null)
+                {
+                    try
+                    {
+                        if (MyMapControl.MapElements.Contains(DevicePositionIcon))
+                            MyMapControl.MapElements.Remove(DevicePositionIcon);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
+                    DevicePositionIcon = new MapIcon();
+                    DevicePositionIcon.NormalizedAnchorPoint = new Point(0.5, 1.0);
+                    DevicePositionIcon.Location = args.Position.Coordinate.Point;
+                    DevicePositionIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", "MyLocation_PushPin2_Small.png")));
+                    // Get the text to display above the map icon from the resource files.
+                    DevicePositionIcon.Title = "Estás aquí";
+                    MyMapControl.MapElements.Add(DevicePositionIcon);
+                }
+            });
         }
         public override System.Threading.Tasks.Task OnNavigatedFrom(Windows.UI.Xaml.Navigation.NavigationEventArgs args)
         {
@@ -129,8 +133,9 @@ namespace MiProximoColectivo.ViewModels
         }
 
         public override async System.Threading.Tasks.Task OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs args)
-        {
+        {            
             HideStatusBarProgressIndicator();
+            
             MenuVisible = Visibility.Visible;
             Label = "Ocultar Menú";
             Icon = new SymbolIcon(Symbol.Download); 
@@ -156,16 +161,16 @@ namespace MiProximoColectivo.ViewModels
                     MyMapControl.MapElements.Remove(DevicePositionIcon);
 
                 DevicePositionIcon = new MapIcon();
-                DevicePositionIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
+                DevicePositionIcon.NormalizedAnchorPoint = new Point(0.5, 1.0);
                 DevicePositionIcon.Location = CommonModel.DevicePosition.Coordinate.Point;
-                DevicePositionIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", "MyLocation_PushPin.png")));
+                DevicePositionIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri(string.Format("ms-appx:///Assets/Bus/{0}", "MyLocation_PushPin2_Small.png")));
                 // Get the text to display above the map icon from the resource files.
                 DevicePositionIcon.Title = "Estás aquí";
                 MyMapControl.MapElements.Add(DevicePositionIcon);
 
-                DownloadBusses();
+                //DownloadBusses();
 
-
+                
 #if WINDOWS_PHONE_APP
                 CenterOnDeviceLocationCommandDelegate();
 #endif
@@ -189,14 +194,16 @@ namespace MiProximoColectivo.ViewModels
             var allBondis = await Requests.RequestGetLastestPositions2();
             Busses bs = new Busses();
             bs.Busseses = new UIObservableCollection<Bus>();
+            CommonModel.BusFeatures.Clear();
             foreach (Feature feature in allBondis.Data.features)
             {
                 bs.Busseses.Add(new Bus() { ImageUri = feature.imageUrl, RawPointString = feature.wkt.ToString(), Nombre = feature.properties.MovilNombre });
+                CommonModel.BusFeatures.Add(feature);
             }
             SetBusses(bs,firstRemove);
         }
 
-        private Task busses;
+        private Task bussesTask;
         private async void DownloadBusses()
         {
             while (true)
@@ -205,13 +212,13 @@ namespace MiProximoColectivo.ViewModels
                 {
                     try
                     {
-                        busses = GetBussesTask();
+                        bussesTask = GetBussesTask();
                     }
                     catch (Exception ex)
                     {
-                        
+
                     }
-                }
+                }   
                 await Task.Run(() => { new System.Threading.ManualResetEvent(false).WaitOne(10000); });
             }
         }
@@ -231,7 +238,7 @@ namespace MiProximoColectivo.ViewModels
 
                 if (remove) { 
                     MyMapControl.MapElements.RemoveAt(c);
-                    CommonModel.MapPageMapElements.RemoveAt(c);
+                    CommonModel.NearFromPageMapElements.RemoveAt(c);
                 }
                 firstRemove = true;
                 AddElementToMapAt(pointIcon,c);
@@ -252,7 +259,7 @@ namespace MiProximoColectivo.ViewModels
             if (MyMapControl != null && elementToAdd != null)
             {
                 MyMapControl.MapElements.Add(elementToAdd);
-                CommonModel.MapPageMapElements.Add(elementToAdd);
+                CommonModel.NearFromPageMapElements.Add(elementToAdd);
             }
         }
 
@@ -261,7 +268,7 @@ namespace MiProximoColectivo.ViewModels
             if (MyMapControl != null && elementToAdd != null)
             {
                 MyMapControl.MapElements.Insert(index,elementToAdd);
-                CommonModel.MapPageMapElements.Insert(index, elementToAdd);
+                CommonModel.NearFromPageMapElements.Insert(index, elementToAdd);
             }
         }
 
@@ -372,7 +379,8 @@ namespace MiProximoColectivo.ViewModels
                      MyMapControl.Routes.Clear();
                     if(DevicePositionIcon != null)
                         MyMapControl.MapElements.Add(DevicePositionIcon);
-                    CommonModel.MapPageMapElements.Clear();
+                    CommonModel.NearFromPageMapElements.Clear();
+                    CommonModel.NearFromPageMapBusses.Busseses.Clear();                    
                     CommonModel.ViewTrackMapElements.Clear();                    
                 }
                 catch(Exception ex)
