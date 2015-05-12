@@ -30,6 +30,8 @@ namespace MiProximoColectivo.ViewModels
         private Visibility _menuVisible;
         private string _label;
         private SymbolIcon _icon;
+        private bool pidoDatos = true;
+        private bool firstRemove = false;
 
         public SymbolIcon Icon
         {
@@ -92,8 +94,15 @@ namespace MiProximoColectivo.ViewModels
             RaisePropertyChanged("DevicePositionReady");
             if(MyMapControl != null)
             {
-                if (MyMapControl.MapElements.Contains(DevicePositionIcon))
-                    MyMapControl.MapElements.Remove(DevicePositionIcon);
+                try
+                {
+                    if (MyMapControl.MapElements.Contains(DevicePositionIcon))
+                        MyMapControl.MapElements.Remove(DevicePositionIcon);
+                }
+                catch (Exception ex)
+                {
+                    
+                }
 
                 DevicePositionIcon = new MapIcon();
                 DevicePositionIcon.NormalizedAnchorPoint = new Point(0.25, 0.9);
@@ -149,9 +158,7 @@ namespace MiProximoColectivo.ViewModels
                 DevicePositionIcon.Title = "Estás aquí";
                 MyMapControl.MapElements.Add(DevicePositionIcon);
 
-                Task busses = GetBussesTask();
-
-                
+                DownloadBusses();
 
 
 #if WINDOWS_PHONE_APP
@@ -181,12 +188,32 @@ namespace MiProximoColectivo.ViewModels
             {
                 bs.Busseses.Add(new Bus() { ImageUri = feature.imageUrl, RawPointString = feature.wkt.ToString(), Nombre = feature.properties.MovilNombre });
             }
-
-            SetBusses(bs);
+            SetBusses(bs,firstRemove);
         }
 
-        public async void SetBusses(Busses busses)
+        private Task busses;
+        private async void DownloadBusses()
         {
+            while (true)
+            {
+                if (pidoDatos)
+                {
+                    try
+                    {
+                        busses = GetBussesTask();
+                    }
+                    catch (Exception ex)
+                    {
+                        
+                    }
+                }
+                await Task.Run(() => { new System.Threading.ManualResetEvent(false).WaitOne(10000); });
+            }
+        }
+
+        public async void SetBusses(Busses busses, bool remove)
+        {
+            int c = 0;
             foreach (Bus bus in busses.Busseses)
             {
                 var pointIcon = new MapIcon();
@@ -197,7 +224,13 @@ namespace MiProximoColectivo.ViewModels
                 pointIcon.Title = bus.Nombre;
                 pointIcon.Image = SetAssetBus(bus.ImageUri);
 
-                AddElementToMap(pointIcon);
+                if (remove) { 
+                    MyMapControl.MapElements.RemoveAt(c);
+                    CommonModel.MapPageMapElements.RemoveAt(c);
+                }
+                firstRemove = true;
+                AddElementToMapAt(pointIcon,c);
+                c++;
             }
         }
 
@@ -215,6 +248,15 @@ namespace MiProximoColectivo.ViewModels
             {
                 MyMapControl.MapElements.Add(elementToAdd);
                 CommonModel.MapPageMapElements.Add(elementToAdd);
+            }
+        }
+
+        public void AddElementToMapAt(MapElement elementToAdd, int index)
+        {
+            if (MyMapControl != null && elementToAdd != null)
+            {
+                MyMapControl.MapElements.Insert(index,elementToAdd);
+                CommonModel.MapPageMapElements.Insert(index, elementToAdd);
             }
         }
 
