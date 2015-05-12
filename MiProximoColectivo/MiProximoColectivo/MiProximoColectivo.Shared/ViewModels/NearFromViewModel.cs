@@ -92,12 +92,7 @@ namespace MiProximoColectivo.ViewModels
             _lastTrackSelected = "Todos los Recorridos";
             DownloadBusses();
         }
-
-
-
-
-
-        private Task bussesTask;
+        
         private async void DownloadBusses()
         {
             while (true)
@@ -118,7 +113,7 @@ namespace MiProximoColectivo.ViewModels
                     }
                 }
 
-                await Task.Delay(12000);
+                await Task.Delay(8000);
                 //await Task.Run(() => { new System.Threading.ManualResetEvent(false).WaitOne(10000); });
                 
             }
