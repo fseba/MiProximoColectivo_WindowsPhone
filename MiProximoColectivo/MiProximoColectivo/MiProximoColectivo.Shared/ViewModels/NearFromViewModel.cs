@@ -16,6 +16,7 @@ using Windows.Foundation;
 using Windows.Storage.Streams;
 using System.Diagnostics;
 using GalaSoft.MvvmLight.Threading;
+using System.Collections.ObjectModel;
 
 namespace MiProximoColectivo.ViewModels
 {
@@ -223,9 +224,12 @@ namespace MiProximoColectivo.ViewModels
                             await DispatcherHelper.RunAsync(() =>
                             {
                                 int indexOfBus = CommonModel.NearFromPageMapBusses.Busseses.IndexOf(bus);
-                                MyMapControl.MapElements.RemoveAt(indexOfBus);
-                                //CommonModel.NearFromPageMapElements.RemoveAt(indexOfBus);
-                                CommonModel.NearFromPageMapBusses.Busseses.RemoveAt(indexOfBus);
+
+                                if ((MyMapControl.MapElements[indexOfBus] as MapIcon).Title != "Estás aquí")
+                                {
+                                    MyMapControl.MapElements.RemoveAt(indexOfBus);
+                                    CommonModel.NearFromPageMapBusses.Busseses.RemoveAt(indexOfBus);                                 
+                                }
                                 index = indexOfBus;
                             });
                         }
@@ -248,6 +252,7 @@ namespace MiProximoColectivo.ViewModels
                         }
                         c++;
                     }
+                    
                 }
                 catch (Exception ex)
                 {
@@ -430,10 +435,13 @@ namespace MiProximoColectivo.ViewModels
                 if (MyMapControl != null && elementToAdd != null)
                 {
                     if (index < MyMapControl.MapElements.Count && index < CommonModel.NearFromPageMapBusses.Busseses.Count)
-                    {                        
-                        MyMapControl.MapElements.Insert(index, elementToAdd);
-                        //CommonModel.NearFromPageMapElements.Insert(index, elementToAdd);
-                        CommonModel.NearFromPageMapBusses.Busseses.Insert(index, busOfElementToAdd);
+                    {
+                        if ((MyMapControl.MapElements[index] as MapIcon).Title != "Estás aquí")
+                        {
+                            MyMapControl.MapElements.Insert(index, elementToAdd);
+                            //CommonModel.NearFromPageMapElements.Insert(index, elementToAdd);
+                            CommonModel.NearFromPageMapBusses.Busseses.Insert(index, busOfElementToAdd);
+                        }
                     }
                     else
                     {
